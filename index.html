@@ -598,6 +598,396 @@
             .fullscreen-frame-mode { border-radius:14px; }
             .floating-close-btn { width:42px; height:42px; top:10px; right:10px; border-radius:12px; }
         }
+
+        /* Navigasi informasi: dropdown ringan, kontras, dan ramah keyboard */
+        .nav-main-link {
+            display:inline-flex; align-items:center; gap:2px; white-space:nowrap;
+            color:#42566a; font-size:12px; font-weight:650; padding:10px 2px;
+            border:0; background:transparent; cursor:pointer; transition:color .18s ease;
+        }
+        .nav-main-link:hover,.nav-main-link:focus-visible,.nav-main-link.is-current { color:#0f4c81; }
+        .nav-main-link.is-current { font-weight:800; }
+        .nav-chevron { font-size:9px; margin-left:4px; opacity:.65; transition:transform .18s ease; }
+        .nav-menu-group { position:relative; }
+        .nav-menu-group.nav-open .nav-chevron { transform:rotate(180deg); }
+        .nav-dropdown {
+            display:none; position:absolute; top:calc(100% + 8px); left:-12px; min-width:245px;
+            padding:8px; border:1px solid rgba(15,76,129,.12); border-radius:14px;
+            background:rgba(255,255,255,.98); box-shadow:0 18px 42px rgba(10,50,84,.17);
+            z-index:100; backdrop-filter:blur(16px);
+        }
+        .nav-menu-group.nav-open .nav-dropdown { display:block; animation:fadeIn .16s ease-out; }
+        .nav-dropdown-right { left:auto; right:0; }
+        .nav-dropdown a,.nav-dropdown button {
+            display:flex; align-items:center; gap:10px; width:100%; padding:10px 11px;
+            border:0; border-radius:9px; color:#40566a; background:transparent; text-align:left;
+            font-size:12px; line-height:1.35; cursor:pointer; text-decoration:none;
+        }
+        .nav-dropdown a i,.nav-dropdown button i { width:16px; color:#3478b8; text-align:center; }
+        .nav-dropdown a:hover,.nav-dropdown button:hover { color:#0f4c81; background:#eef6ff; }
+        .nav-icon-button {
+            display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;
+            border:1px solid rgba(15,76,129,.12); border-radius:50%; color:#486174; background:#fff;
+            transition:all .18s ease;
+        }
+        .nav-icon-button:hover { color:#fff; background:#0f4c81; box-shadow:0 5px 14px rgba(15,76,129,.18); }
+        .mobile-nav-link {
+            display:flex; align-items:center; gap:12px; padding:11px 12px; border-radius:10px;
+            color:#40566a; font-size:14px; font-weight:600; text-decoration:none;
+        }
+        .mobile-nav-link i { width:19px; color:#3478b8; text-align:center; }
+        .mobile-nav-link:hover,.mobile-nav-link:focus-visible { background:#eef6ff; color:#0f4c81; }
+        @media (max-width: 1100px) {
+            .nav-main-link { font-size:11px; }
+            header.klik-asn-header > div { padding-left:14px; padding-right:14px; }
+        }
+
+
+        /* Stabilkan posisi header dan lebar layout saat modal login/reset dibuka atau ditutup. */
+        html { scrollbar-gutter: stable; }
+        header.klik-asn-header {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+            flex-shrink: 0;
+            backface-visibility: hidden;
+        }
+        body.auth-overlay-open { overflow: hidden !important; }
+        body.auth-overlay-open .klik-asn-header { margin-right: var(--auth-scrollbar-gap, 0px); }
+
+        /* =========================================================
+           KLIK-ASN AUTH UX — Modern Elegance & Minimalist split-screen
+           Styling-only enhancement; existing IDs and submit handlers retained.
+           ========================================================= */
+        #login-modal .auth-modal-card,
+        #reset-modal .auth-modal-card {
+            display: grid;
+            grid-template-columns: minmax(250px, .88fr) minmax(340px, 1.12fr);
+            width: min(940px, calc(100vw - 40px));
+            max-width: 940px;
+            max-height: min(92vh, 860px);
+            padding: 0 !important;
+            border: 1px solid rgba(148,163,184,.28);
+            border-radius: 24px;
+            background: #fff;
+            overflow: auto;
+            box-shadow: 0 28px 90px rgba(15, 35, 60, .28);
+            font-family: 'Inter', sans-serif;
+        }
+        #login-modal .auth-split-visual,
+        #reset-modal .auth-split-visual {
+            position: relative;
+            isolation: isolate;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100%;
+            padding: clamp(26px, 3.2vw, 42px);
+            overflow: hidden;
+            color: #fff;
+            background: radial-gradient(circle at 18% 18%, rgba(88,166,255,.32), transparent 32%),
+                        radial-gradient(circle at 85% 76%, rgba(243,156,18,.24), transparent 28%),
+                        linear-gradient(145deg, #071d35 0%, #0b3a62 52%, #17608b 100%);
+        }
+        .auth-split-visual::before,
+        .auth-split-visual::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .auth-split-visual::before { width: 310px; height: 310px; right: -115px; top: 12%; box-shadow: 0 0 0 28px rgba(255,255,255,.035), 0 0 0 58px rgba(255,255,255,.025); }
+        .auth-split-visual::after { width: 210px; height: 210px; left: -100px; bottom: -65px; box-shadow: 0 0 0 25px rgba(255,255,255,.035); }
+        .auth-visual-brand { display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.04em; }
+        .auth-visual-brand-mark { display:grid; place-items:center; width:42px; height:42px; border-radius:14px; color:#fff; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); backdrop-filter:blur(10px); }
+        .auth-visual-art { position:relative; display:grid; place-items:center; min-height:205px; margin:20px 0; }
+        .auth-orbit { position:absolute; width:190px; height:190px; border:1px solid rgba(255,255,255,.25); border-radius:50%; transform:rotate(-24deg) scaleY(.48); }
+        .auth-orbit.orbit-two { width:230px; height:230px; transform:rotate(48deg) scaleY(.46); border-color:rgba(243,156,18,.52); }
+        .auth-glass-tile { display:grid; place-items:center; width:112px; height:128px; border:1px solid rgba(255,255,255,.32); border-radius:28px; background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.06)); box-shadow:0 25px 60px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.22); backdrop-filter:blur(12px); transform:rotate(-8deg); }
+        .auth-glass-tile i { font-size:42px; color:#fff; text-shadow:0 8px 24px rgba(0,0,0,.22); }
+        .auth-visual-copy h3 { margin:0 0 12px; font-size:clamp(22px,2.3vw,30px); line-height:1.2; font-weight:700; letter-spacing:-.03em; }
+        .auth-visual-copy p { max-width:320px; color:rgba(255,255,255,.78); font-size:13px; line-height:1.75; }
+        .auth-visual-foot { margin-top:24px; color:rgba(255,255,255,.64); font-size:10px; letter-spacing:.08em; text-transform:uppercase; }
+        .auth-form-pane { position:relative; min-width:0; padding:clamp(28px,4vw,48px); align-self:center; }
+        #login-modal .auth-form-pane > .text-center { padding-right:22px; margin-bottom:28px; }
+        #login-modal .auth-form-pane h2,
+        #reset-modal .auth-form-pane h2 { color:#132238; letter-spacing:-.035em; }
+        #login-modal .auth-form-pane p,
+        #reset-modal .auth-form-pane p { color:#64748b; line-height:1.6; }
+        #login-modal .auth-modern-icon,
+        #reset-modal .auth-modern-icon { display:none; }
+        #login-modal .auth-modal-close,
+        #reset-modal .auth-modal-close { top:16px; right:16px; width:34px; height:34px; border-radius:11px; box-shadow:none; background:#f8fafc; border-color:#e2e8f0; color:#64748b; }
+        #login-modal .auth-modal-close:hover,
+        #reset-modal .auth-modal-close:hover { color:#fff; background:#0f4c81; }
+        #login-modal .auth-form-pane label,
+        #reset-modal .auth-form-pane label { color:#334155; font-size:12px; font-weight:600; }
+        #login-modal #nip-input,
+        #login-modal #password-input,
+        #reset-modal #reset-nip-input,
+        #reset-modal #reset-password-input,
+        #reset-modal #reset-password-confirm {
+            min-height:48px;
+            border:1px solid #cbd5e1 !important;
+            border-radius:12px !important;
+            background:#fff;
+            color:#0f172a;
+            font-family:'Inter',sans-serif;
+            font-size:14px;
+            outline:none;
+            box-shadow:none;
+        }
+        #login-modal #nip-input::placeholder,
+        #login-modal #password-input::placeholder,
+        #reset-modal input::placeholder { color:#94a3b8; }
+        #login-modal #nip-input:focus,
+        #login-modal #password-input:focus,
+        #reset-modal #reset-nip-input:focus,
+        #reset-modal #reset-password-input:focus,
+        #reset-modal #reset-password-confirm:focus {
+            border-color:#1769aa !important;
+            box-shadow:0 0 0 3px rgba(23,105,170,.14) !important;
+        }
+        #login-modal .auth-form-pane .relative > .absolute,
+        #reset-modal .auth-form-pane .relative > i { color:#64748b; }
+        #login-modal .auth-primary-btn,
+        #reset-modal .auth-primary-btn { min-height:48px; border-radius:12px; font-size:14px; font-weight:700; }
+        #login-modal .auth-form-pane .border-t,
+        #reset-modal .auth-form-pane .border-t { border-color:#e2e8f0; }
+        #login-modal .auth-link,
+        #reset-modal a { color:#0f5f9f; font-weight:600; }
+        #login-modal .auth-link:focus-visible,
+        #reset-modal button:focus-visible,
+        #login-modal button:focus-visible { outline:3px solid rgba(23,105,170,.3); outline-offset:3px; }
+        #reset-modal .auth-form-pane { padding-top:38px; padding-bottom:32px; }
+        #reset-modal .auth-form-pane > .text-center { margin-bottom:22px; }
+        #reset-modal .auth-form-pane .mb-4 { margin-bottom:14px; }
+        @media (max-width: 700px) {
+            #login-modal .auth-modal-card,
+            #reset-modal .auth-modal-card { display:block; width:calc(100vw - 24px); max-width:460px; max-height:92vh; border-radius:20px; }
+            #login-modal .auth-split-visual,
+            #reset-modal .auth-split-visual { min-height:auto; padding:20px 24px 18px; }
+            .auth-visual-art { display:none; }
+            .auth-visual-copy h3 { font-size:20px; margin:22px 0 6px; }
+            .auth-visual-copy p { font-size:12px; }
+            .auth-visual-foot { margin-top:14px; }
+            .auth-form-pane { padding:28px 24px 24px; }
+            #login-modal .auth-form-pane > .text-center { margin-bottom:22px; }
+            #login-modal .auth-form-pane h2,
+            #reset-modal .auth-form-pane h2 { font-size:23px; }
+        }
+        @media (max-width: 380px) {
+            #login-modal .auth-modal-card,
+            #reset-modal .auth-modal-card { width:calc(100vw - 16px); }
+            #login-modal .auth-split-visual,
+            #reset-modal .auth-split-visual { padding:16px 18px; }
+            #login-modal .auth-form-pane,
+            #reset-modal .auth-form-pane { padding:24px 18px 20px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #login-modal *, #reset-modal * { animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+        }
+
+
+        /* Final polish: remove visible scrollbars and keep the auth panels balanced */
+        html, body { max-width: 100%; overflow-x: clip; }
+        #login-modal, #reset-modal {
+            overflow: hidden !important;
+            overscroll-behavior: none;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+        #login-modal .auth-modal-card,
+        #reset-modal .auth-modal-card {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            width: min(960px, calc(100vw - 48px));
+            height: min(650px, calc(100dvh - 48px));
+            max-height: calc(100dvh - 48px);
+            overflow: hidden !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            align-items: stretch;
+            box-sizing: border-box;
+        }
+        #login-modal .auth-modal-card::-webkit-scrollbar,
+        #reset-modal .auth-modal-card::-webkit-scrollbar,
+        #login-modal::-webkit-scrollbar,
+        #reset-modal::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        #login-modal .auth-split-visual,
+        #reset-modal .auth-split-visual {
+            min-width: 0;
+            min-height: 0;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        #login-modal .auth-form-pane,
+        #reset-modal .auth-form-pane {
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+            overflow-wrap: anywhere;
+        }
+        #login-modal .auth-form-pane form,
+        #reset-modal .auth-form-pane form { width: 100%; }
+        @media (max-width: 700px) {
+            #login-modal, #reset-modal { padding: 12px; }
+            #login-modal .auth-modal-card,
+            #reset-modal .auth-modal-card {
+                display: block;
+                width: min(460px, calc(100vw - 24px));
+                height: auto;
+                max-height: calc(100dvh - 24px);
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                scrollbar-width: none !important;
+                -ms-overflow-style: none !important;
+            }
+            #login-modal .auth-modal-card::-webkit-scrollbar,
+            #reset-modal .auth-modal-card::-webkit-scrollbar { display:none !important; width:0 !important; height:0 !important; }
+            #login-modal .auth-split-visual,
+            #reset-modal .auth-split-visual { height:auto; }
+        }
+        @media (max-width: 380px) {
+            #login-modal, #reset-modal { padding: 8px; }
+            #login-modal .auth-modal-card,
+            #reset-modal .auth-modal-card { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+        }
+    
+
+        /* =========================================================
+           FULL-WIDTH CONTENT: luas, simetris, dan responsif
+           Header tetap menggunakan lebar/posisi yang sudah ada.
+           ========================================================= */
+        :root {
+            --content-gutter: clamp(12px, 2.1vw, 34px);
+            --content-max-width: 100%;
+        }
+        /* Hero memenuhi ruang horizontal tepat di bawah header. */
+        #beranda.klik-asn-hero {
+            width: 100%;
+            max-width: none;
+            margin-inline: 0;
+            border-radius: 0 0 28px 28px;
+        }
+        #beranda.klik-asn-hero > .container {
+            width: 100%;
+            max-width: none;
+            margin-inline: 0;
+            padding-left: var(--content-gutter);
+            padding-right: var(--content-gutter);
+        }
+        /* Area layanan utama tidak lagi dibatasi container Tailwind. */
+        body > main,
+        main.flex-grow.container {
+            width: 100%;
+            max-width: none;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: var(--content-gutter);
+            padding-right: var(--content-gutter);
+            padding-top: clamp(24px, 3vw, 44px);
+            padding-bottom: clamp(28px, 3vw, 48px);
+        }
+        main.flex-grow.container > .grid {
+            width: 100%;
+            max-width: none;
+            grid-template-columns: minmax(270px, .88fr) minmax(0, 2.12fr);
+            gap: clamp(16px, 1.8vw, 28px);
+            align-items: start;
+        }
+        main.flex-grow.container > .grid > * { min-width: 0; }
+        /* Kartu lebih rapi pada layar lebar tanpa mengubah isi/fungsinya. */
+        main.flex-grow.container .bg-white.rounded-xl,
+        main.flex-grow.container #informasi-kepegawaian {
+            border-radius: 18px;
+            box-shadow: 0 8px 26px rgba(10, 50, 84, .055);
+        }
+        /* Riwayat konsultasi melebar penuh mengikuti area konten. */
+        body > .container.mx-auto.my-12,
+        body > div.container.mx-auto.px-4.lg\:px-8.my-12 {
+            width: 100%;
+            max-width: none;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: var(--content-gutter);
+            padding-right: var(--content-gutter);
+        }
+        body > div.container.mx-auto.px-4.lg\:px-8.my-12 > .bg-white {
+            border-radius: 18px;
+            box-shadow: 0 8px 26px rgba(10, 50, 84, .055);
+        }
+        /* Tablet: kolom tetap seimbang, ruang horizontal tidak berlebih. */
+        @media (max-width: 1023px) {
+            :root { --content-gutter: clamp(12px, 2.2vw, 22px); }
+            main.flex-grow.container > .grid {
+                grid-template-columns: minmax(230px, .8fr) minmax(0, 1.7fr);
+                gap: 16px;
+            }
+            #beranda.klik-asn-hero > .container { padding-top: 44px; padding-bottom: 56px; }
+        }
+        /* Ponsel: susun satu kolom dan cegah elemen meluber ke samping. */
+        @media (max-width: 767px) {
+            :root { --content-gutter: 12px; }
+            #beranda.klik-asn-hero { border-radius: 0 0 20px 20px; }
+            #beranda.klik-asn-hero > .container {
+                padding-top: 32px;
+                padding-bottom: 48px;
+            }
+            main.flex-grow.container > .grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+            main.flex-grow.container { padding-top: 22px; padding-bottom: 28px; }
+            body > div.container.mx-auto.px-4.lg\:px-8.my-12 { margin-top: 20px; margin-bottom: 24px; }
+            body > div.container.mx-auto.px-4.lg\:px-8.my-12 > .bg-white { padding: 16px; }
+            .klik-asn-hero h2 { font-size: clamp(2.2rem, 11vw, 3.4rem); }
+        }
+        @media (min-width: 1600px) {
+            :root { --content-gutter: clamp(34px, 2.5vw, 52px); }
+            main.flex-grow.container > .grid { gap: 30px; }
+        }
+        /* Lindungi layout dari tabel, teks, atau URL panjang. */
+        #beranda, main.flex-grow.container, #informasi-kepegawaian,
+        body > div.container.mx-auto.px-4.lg\:px-8.my-12 { min-width: 0; }
+        main.flex-grow.container table { min-width: 680px; }
+
+
+        /* Kabar ASN Karangasem */
+        .social-hero-card { box-shadow:0 18px 42px rgba(4,25,50,.18); }
+        .social-hero-icon { width:42px;height:42px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;border-radius:14px;background:linear-gradient(135deg,#f5b544,#f39c12);color:#173c5b;font-size:18px;box-shadow:0 8px 20px rgba(243,156,18,.22); }
+        .social-source-link { display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.09);color:#fff;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:650;transition:background .2s ease,transform .2s ease; }
+        .social-source-link:hover,.social-source-link:focus-visible { background:rgba(255,255,255,.2);transform:translateY(-1px);outline:2px solid rgba(255,255,255,.65);outline-offset:2px; }
+        .social-feed-item { display:block;min-width:0;border:1px solid rgba(255,255,255,.17);border-radius:12px;padding:10px 12px;background:rgba(4,25,50,.17);color:white;text-decoration:none; }
+        .social-feed-item:hover { background:rgba(255,255,255,.12); }
+        .social-feed-item .social-feed-source { font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#f8c76b;font-weight:800; }
+        .social-feed-item .social-feed-title { display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.5;font-weight:650;margin-top:4px; }
+        /* Riwayat konsultasi: tabel seimbang pada desktop, scroll hanya bila layar kecil */
+        .consult-table-wrap { width:100%; overflow-x:auto; border:1px solid #e8eef4; border-radius:14px; }
+        .consult-history-table { width:100%; min-width:1050px; table-layout:fixed; }
+        .consult-history-table th { padding:13px 12px;text-align:left;font-size:10px;letter-spacing:.045em;line-height:1.4;white-space:normal; }
+        .consult-history-table td { padding:13px 12px;vertical-align:top;overflow-wrap:anywhere; }
+        .consult-history-table tbody tr:hover { background:#f8fbff; }
+        .consult-question { display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:help; }
+        .consult-followup { display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.45; }
+        .consult-detail-btn { display:inline-flex;align-items:center;justify-content:center;gap:5px;border:1px solid #cfe0f0;border-radius:9px;padding:7px 9px;color:#0f4c81;background:#f2f8fd;font-size:11px;font-weight:750;white-space:nowrap; }
+        .consult-detail-btn:hover { color:#fff;background:#0f4c81;border-color:#0f4c81; }
+        .consult-detail-backdrop { position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(6,27,47,.62);backdrop-filter:blur(7px); }
+        .consult-detail-backdrop.hidden { display:none !important; }
+        .consult-detail-card { width:min(720px,100%);max-height:min(88dvh,820px);overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.28); }
+        .consult-detail-close { display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:#f1f5f9;color:#475569;flex:0 0 auto; }
+        .consult-detail-close:hover { background:#e2e8f0;color:#0f4c81; }
+        .consult-detail-field { padding:12px 14px;border:1px solid #e8eef4;border-radius:12px;background:#fbfdff; }
+        .consult-detail-label { font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin-bottom:5px; }
+        .consult-detail-value { color:#1e293b;font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere; }
+        @media(max-width:767px) { .social-hero-card { padding:14px; } .consult-history-table { min-width:1030px; } .consult-detail-backdrop { padding:10px; } .consult-detail-card { border-radius:17px; } }
 </style>
 </head>
 <body class="bg-background text-gray-800 font-sans antialiased flex flex-col min-h-screen">
@@ -621,35 +1011,77 @@
 </div>
 
 
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-6 items-center">
-                    <a href="#" class="text-primary font-semibold border-b-2 border-primary pb-1"><i class="fas fa-home mr-1"></i> Beranda</a>
-                    <a href="#layanan-teknis" onclick="document.getElementById('layanan-teknis').scrollIntoView({behavior:'smooth', block:'start'});" class="text-gray-600 hover:text-primary transition-colors"><i class="fas fa-cogs mr-1"></i> Menu Layanan Teknis</a>
-                    <a href="#kanal-integrasi" class="text-gray-600 hover:text-primary transition-colors"><i class="fas fa-link mr-1"></i> Kanal Layanan Integrasi</a>
-                    <a href="#form-konsultasi" class="text-gray-600 hover:text-primary transition-colors"><i class="fas fa-comments mr-1"></i> Konsultasi</a>
-                    
-                    <!-- Search Icon -->
-                    <button class="text-gray-600 hover:text-primary transition-colors focus:outline-none" onclick="toggleSearch()">
-                        <i class="fas fa-search"></i>
-                    </button>
+                <!-- Navigasi utama KLIK-ASN: enam kategori layanan -->
+                <nav class="hidden md:flex items-center gap-3 lg:gap-4" aria-label="Navigasi utama">
+                    <a href="#beranda" class="nav-main-link is-current"><i class="fas fa-house mr-1.5"></i>Beranda</a>
 
-                    <!-- Login / User Header -->
+                    <div class="nav-menu-group">
+                        <button type="button" class="nav-main-link" aria-haspopup="true" onclick="toggleNavDropdown(this)">
+                            <i class="fas fa-briefcase mr-1.5"></i>Layanan Kepegawaian <i class="fas fa-chevron-down nav-chevron"></i>
+                        </button>
+                        <div class="nav-dropdown">
+                            <a href="#layanan-teknis" onclick="closeNavDropdowns()"><i class="fas fa-arrow-trend-up"></i>Cek Kenaikan Pangkat</a>
+                            <a href="#layanan-teknis" onclick="closeNavDropdowns()"><i class="fas fa-graduation-cap"></i>Cek Pengukuhan Pendidikan dan PMK</a>
+                            <a href="#layanan-teknis" onclick="closeNavDropdowns()"><i class="fas fa-user-clock"></i>Cek Pensiun</a>
+                            <a href="#layanan-teknis" onclick="closeNavDropdowns()"><i class="fas fa-medal"></i>Cek Satyalancana Karya Satya</a>
+                            <a href="#layanan-teknis" onclick="closeNavDropdowns()"><i class="fas fa-chevron-right"></i>Layanan Lainnya</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-menu-group">
+                        <button type="button" class="nav-main-link" aria-haspopup="true" onclick="toggleNavDropdown(this)">
+                            <i class="fas fa-layer-group mr-1.5"></i>Portal Terintegrasi <i class="fas fa-chevron-down nav-chevron"></i>
+                        </button>
+                        <div class="nav-dropdown">
+                            <a href="#kanal-integrasi" onclick="closeNavDropdowns()"><i class="fas fa-cloud"></i>SIDOKUASN</a>
+                            <a href="#kanal-integrasi" onclick="closeNavDropdowns()"><i class="fas fa-arrows-rotate"></i>ASN Digital / SIASN BKN</a>
+                            <a href="#kanal-integrasi" onclick="closeNavDropdowns()"><i class="fas fa-fingerprint"></i>Presensi Online</a>
+                            <a href="#kanal-integrasi" onclick="closeNavDropdowns()"><i class="fas fa-chart-line"></i>TPP Kabupaten Karangasem</a>
+                            <a href="#kanal-integrasi" onclick="closeNavDropdowns()"><i class="fas fa-arrow-trend-up"></i>Layanan Sadari Jafung</a>
+                            <a href="#kanal-integrasi" onclick="closeNavDropdowns()"><i class="fas fa-user-gear"></i>Jafung Online</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-menu-group">
+                        <button type="button" class="nav-main-link" aria-haspopup="true" onclick="toggleNavDropdown(this)">
+                            <i class="fas fa-book-open mr-1.5"></i>Informasi dan Panduan <i class="fas fa-chevron-down nav-chevron"></i>
+                        </button>
+                        <div class="nav-dropdown">
+                            <a href="#informasi-panduan" onclick="closeNavDropdowns()"><i class="fas fa-file-lines"></i>Informasi Teknis Kepegawaian</a>
+                            <a href="#informasi-kepegawaian" onclick="closeNavDropdowns()"><i class="fas fa-newspaper"></i>Informasi Kepegawaian Terkini</a>
+                            <a href="#informasi-panduan" onclick="closeNavDropdowns()"><i class="fas fa-scale-balanced"></i>Regulasi dan Persyaratan</a>
+                            <a href="#informasi-panduan" onclick="closeNavDropdowns()"><i class="fas fa-route"></i>Alur dan Panduan Layanan</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-menu-group">
+                        <button type="button" class="nav-main-link" aria-haspopup="true" onclick="toggleNavDropdown(this)">
+                            <i class="fas fa-headset mr-1.5"></i>Bantuan <i class="fas fa-chevron-down nav-chevron"></i>
+                        </button>
+                        <div class="nav-dropdown nav-dropdown-right">
+                            <button type="button" onclick="bukaFaqModal();closeNavDropdowns()"><i class="fas fa-circle-question"></i>Pertanyaan Umum (FAQ)</button>
+                            <a href="#form-konsultasi" onclick="closeNavDropdowns()"><i class="fas fa-comments"></i>Konsultasi Kepegawaian</a>
+                            <a href="#form-konsultasi" onclick="closeNavDropdowns()"><i class="fas fa-envelope"></i>Hubungi BKPSDM</a>
+                        </div>
+                    </div>
+
+                    <button class="nav-icon-button" aria-label="Cari layanan" title="Cari layanan" onclick="toggleSearch()"><i class="fas fa-search"></i></button>
+
+                    <!-- Area akun dipertahankan agar integrasi autentikasi tetap berjalan -->
                     <div id="desktop-auth-area" class="flex items-center gap-2">
-                        <button id="desktop-login-btn" onclick="openLoginModal()" class="bg-primary hover:bg-primary-dark text-white px-5 py-2 rounded-full font-medium transition-colors shadow-sm flex items-center">
+                        <button id="desktop-login-btn" onclick="openLoginModal()" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-full font-medium transition-colors shadow-sm flex items-center whitespace-nowrap">
                             <i class="fas fa-user-circle mr-2"></i> Login
                         </button>
-
-                        <!-- Ditampilkan setelah login berhasil -->
                         <div id="desktop-user-area" class="hidden items-center gap-2">
-                            <div class="flex items-center bg-green-50 border border-green-200 text-green-800 px-4 py-2 rounded-full shadow-sm max-w-[320px]">
+                            <div class="flex items-center bg-green-50 border border-green-200 text-green-800 px-3 py-2 rounded-full shadow-sm max-w-[240px]">
                                 <i class="fas fa-user-check mr-2 text-green-600"></i>
                                 <div class="leading-tight min-w-0">
                                     <span class="block text-[10px] uppercase tracking-wide text-green-600 font-semibold">Pengguna</span>
                                     <span id="desktop-user-name" class="block text-sm font-semibold truncate">Nama Lengkap</span>
                                 </div>
                             </div>
-                            <button id="desktop-logout-btn" onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full font-medium transition-colors shadow-sm flex items-center">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            <button id="desktop-logout-btn" onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-full font-medium transition-colors shadow-sm flex items-center">
+                                <i class="fas fa-sign-out-alt mr-1.5"></i> Logout
                             </button>
                         </div>
                     </div>
@@ -672,32 +1104,28 @@
             </div>
         </div>
 
-        <!-- Mobile Navigation Menu (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="flex flex-col px-4 py-3 space-y-3">
-                <a href="#" class="text-primary font-semibold"><i class="fas fa-home mr-2 w-5"></i> Beranda</a>
-                <a href="#layanan-teknis" onclick="document.getElementById('layanan-teknis').scrollIntoView({behavior:'smooth', block:'start'}); return false;" class="text-gray-600"><i class="fas fa-cogs mr-2 w-5"></i> Menu Layanan Teknis</a>
-                <a href="#kanal-integrasi" class="text-gray-600"><i class="fas fa-link mr-2 w-5"></i> Kanal Layanan Integrasi</a>
-                <a href="#form-konsultasi" class="text-gray-600"><i class="fas fa-comments mr-2 w-5"></i> Konsultasi</a>
-                <div class="pt-2 border-t border-gray-100">
-                    <button id="mobile-login-btn" onclick="openLoginModal()" class="w-full bg-primary text-white px-4 py-2 rounded-md font-medium text-center">
-                        <i class="fas fa-user-circle mr-2"></i> Login / Masuk
+        <!-- Navigasi seluler diselaraskan dengan enam kategori utama -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-blue-100">
+            <div class="flex flex-col px-4 py-3 gap-1.5">
+                <a href="#beranda" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-house"></i>Beranda</a>
+                <a href="#layanan-teknis" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-briefcase"></i>Layanan Kepegawaian</a>
+                <a href="#kanal-integrasi" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-layer-group"></i>Portal dan Kanal Terintegrasi</a>
+                <a href="#informasi-panduan" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-book-open"></i>Informasi dan Panduan</a>
+                <a href="#form-konsultasi" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-headset"></i>Konsultasi dan Bantuan</a>
+                <button type="button" onclick="bukaFaqModal();toggleMobileMenu()" class="mobile-nav-link text-left"><i class="fas fa-circle-question"></i>Pertanyaan Umum (FAQ)</button>
+                <div class="pt-3 mt-2 border-t border-gray-100">
+                    <button id="mobile-login-btn" onclick="openLoginModal()" class="w-full bg-primary text-white px-4 py-2.5 rounded-xl font-semibold text-center shadow-sm">
+                        <i class="fas fa-user-circle mr-2"></i>Login / Akun ASN
                     </button>
-
-                    <!-- Ditampilkan setelah login berhasil -->
-                    <div id="mobile-user-area" class="hidden space-y-2">
+                    <div id="mobile-user-area" class="hidden space-y-2 mt-2">
                         <div class="flex items-center bg-green-50 border border-green-200 rounded-lg px-3 py-2">
-                            <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-3">
-                                <i class="fas fa-user-check"></i>
-                            </div>
+                            <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-3"><i class="fas fa-user-check"></i></div>
                             <div class="min-w-0">
                                 <span class="block text-[10px] uppercase tracking-wide text-green-600 font-semibold">Login sebagai</span>
                                 <span id="mobile-user-name" class="block text-sm font-semibold text-gray-800 truncate">Nama Lengkap</span>
                             </div>
                         </div>
-                        <button onclick="logoutUser(); toggleMobileMenu();" class="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md font-medium text-center">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                        </button>
+                        <button onclick="logoutUser(); toggleMobileMenu();" class="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl font-medium text-center"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
                     </div>
                 </div>
             </div>
@@ -705,7 +1133,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="klik-asn-hero relative bg-primary-dark text-white overflow-hidden">
+    <section id="beranda" class="klik-asn-hero relative bg-primary-dark text-white overflow-hidden scroll-mt-24">
         <!-- Background Image with Overlay -->
         <div class="hero-digital-orbit" aria-hidden="true"></div>
         <div class="absolute inset-0 z-0">
@@ -734,15 +1162,24 @@
                     BerAKHLAK, Bangga Melayani Bangsa, Profesional, Berkinerja dan Melayani Sepenuh Hati.
                 </p>
 
-                <!-- Stats Badge -->
-                <div class="inline-flex items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-3 shadow-lg">
-                    <div class="bg-secondary text-primary-dark rounded-full p-2 mr-4">
-                        <i class="fas fa-users"></i>
+                <!-- Kabar ASN Karangasem: sumber sosial + integrasi feed opsional -->
+                <div id="kabar-asn-hero" class="social-hero-card mt-2 w-full max-w-2xl rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-4 sm:p-5 shadow-xl">
+                    <div class="flex items-start gap-3">
+                        <div class="social-hero-icon"><i class="fas fa-satellite-dish"></i></div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-xs text-blue-100 uppercase tracking-[.16em] font-semibold">Kabar BKPSDM Karangasem</p>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mt-1">Informasi dari kanal digital dan media sosial</h3>
+                            <p id="social-feed-status" class="text-xs sm:text-sm text-blue-100 mt-1 leading-relaxed">Telusuri kabar Aktifitas BKPSDM Karangasem melalui kanal publik. </p>
+                            <div class="flex flex-wrap gap-2 mt-3" aria-label="Kanal media sosial">
+                                <a class="social-source-link" href="https://www.instagram.com/bkpsdm.karangasemkab" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a>
+                                <a class="social-source-link" href="https://web.facebook.com/bkpsdmkabkarangasem" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i> Facebook</a>
+                                <a class="social-source-link" href="https://www.tiktok.com/@bkpsdm_kabkarangasem" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i> TikTok</a>
+                                <a class="social-source-link" href="https://www.youtube.com/@bkpsdm_karangasemkab" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i> YouTube</a>
+                                <a class="social-source-link" href="https://bkpsdm.karangasemkab.go.id/" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Website Resmi BKPSDM</a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-xs text-blue-100 uppercase tracking-wide">Total ASN Kabupaten Karangasem</p>
-                        <p class="text-2xl font-bold">Sedang Update</p>
-                    </div>
+                    <div id="social-feed-items" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4" aria-live="polite"></div>
                 </div>
             </div>
 
@@ -774,17 +1211,20 @@
             
             <!-- Left Column: Login Status & Info -->
             <div class="lg:col-span-1 space-y-6">
-                
-                <!-- Login Panel -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover-slide-up">
+                 <!-- Login Panel -->
+                <div id="login-status-panel" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover-slide-up">
                     <div class="flex items-center space-x-3 mb-4">
-                        <div class="bg-blue-50 p-3 rounded-lg text-primary">
-                            <i class="fas fa-lock text-xl"></i>
-                        </div>
-                        <div>
+                        <div id="login-panel-avatar" class="bg-blue-50 p-3 rounded-lg text-primary"><i class="fas fa-user-lock text-xl"></i></div>
+                        <div class="min-w-0 flex-1">
                             <h3 class="font-bold text-gray-800 text-lg">Login</h3>
                             <p class="text-xs text-gray-500">Akses semua layanan</p>
                         </div>
+                    </div>
+                    <div id="login-panel-profile" class="hidden mb-4 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-white p-3">
+                        <p class="text-[10px] uppercase tracking-wider font-bold text-blue-600">Profil pengguna aktif</p>
+                        <p id="login-panel-user-name" class="mt-1 font-bold text-gray-800 break-words">Nama Pengguna</p>
+                        <p id="login-panel-user-nip" class="mt-1 text-xs text-gray-500 break-all"></p>
+                        <div class="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-green-700"><span class="auth-status-dot"></span> Sesi aktif</div>
                     </div>
                     
                     <button onclick="openLoginModal()" class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 rounded-lg transition-colors mb-3 shadow-sm">
@@ -793,6 +1233,52 @@
                     
                     </div>
 
+                <!-- About Section -->
+                <div id="tentang" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden hover-slide-up">
+                    <!-- Decorative background element -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-bl-full -z-10 opacity-50"></div>
+                    
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-info-circle text-primary text-xl"></i>
+                        <h3 class="font-bold text-gray-800 text-lg">Tentang KLIK-ASN</h3>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-2/3">
+                            <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                <strong>KLIK-ASN</strong> adalah Kanal ASN Terintegrasi Memudahkan Akses Layanan, Informasi Teknis dan Konsultasi Secara Progesional, Cepat, Transparan dan Aman.
+                            </p>
+                            
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+                                <div class="text-center p-2 rounded bg-gray-50">
+                                    <i class="fas fa-link text-primary mb-1"></i>
+                                    <p class="text-xs font-medium">Terintegrasi</p>
+                                </div>
+                                <div class="text-center p-2 rounded bg-gray-50">
+                                    <i class="fas fa-mobile-alt text-primary mb-1"></i>
+                                    <p class="text-xs font-medium">Mudah Diakses</p>
+                                </div>
+                                <div class="text-center p-2 rounded bg-gray-50">
+                                    <i class="fas fa-eye text-primary mb-1"></i>
+                                    <p class="text-xs font-medium">Transparan</p>
+                                </div>
+                                <div class="text-center p-2 rounded bg-gray-50">
+                                    <i class="fas fa-user-tie text-primary mb-1"></i>
+                                    <p class="text-xs font-medium">Profesional</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:w-1/3 flex items-center justify-center border-l border-gray-100 pl-4">
+                            <div class="text-center">
+                                <p class="text-lg font-serif italic text-gray-700 mb-2">"Dari Kami,<br>Untuk ASN Karangasem Menuju Karangasem Agung"</p>
+                                <!-- Decorative Ornament placeholder -->
+                                <i class="fas fa-seedling text-secondary text-2xl opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
                 <!-- Informasi Kepegawaian Terkini - sumber mesin pencarian -->
                 <div id="informasi-kepegawaian" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover-slide-up">
                     <div class="bg-gray-50 border-b border-gray-100 px-5 py-3">
@@ -841,64 +1327,20 @@
                         </button>
                     </div>
                 </div>
-
-            </div>
+             
 
             <!-- Middle Column: About & Integrations -->
             <div class="lg:col-span-2 space-y-6">
                 
-                <!-- About Section -->
-                <div id="tentang" class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden hover-slide-up">
-                    <!-- Decorative background element -->
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-bl-full -z-10 opacity-50"></div>
-                    
-                    <div class="flex items-center space-x-2 mb-4">
-                        <i class="fas fa-info-circle text-primary text-xl"></i>
-                        <h3 class="font-bold text-gray-800 text-lg">Tentang KLIK-ASN</h3>
-                    </div>
-                    
-                    <div class="flex flex-col md:flex-row gap-6">
-                        <div class="md:w-2/3">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">
-                                <strong>KLIK-ASN</strong> adalah Kanal ASN Terintegrasi Memudahkan Akses Layanan, Informasi Teknis dan Konsultasi Secara Progesional, Cepat, Transparan dan Aman.
-                            </p>
-                            
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-                                <div class="text-center p-2 rounded bg-gray-50">
-                                    <i class="fas fa-link text-primary mb-1"></i>
-                                    <p class="text-xs font-medium">Terintegrasi</p>
-                                </div>
-                                <div class="text-center p-2 rounded bg-gray-50">
-                                    <i class="fas fa-mobile-alt text-primary mb-1"></i>
-                                    <p class="text-xs font-medium">Mudah Diakses</p>
-                                </div>
-                                <div class="text-center p-2 rounded bg-gray-50">
-                                    <i class="fas fa-eye text-primary mb-1"></i>
-                                    <p class="text-xs font-medium">Transparan</p>
-                                </div>
-                                <div class="text-center p-2 rounded bg-gray-50">
-                                    <i class="fas fa-user-tie text-primary mb-1"></i>
-                                    <p class="text-xs font-medium">Profesional</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="md:w-1/3 flex items-center justify-center border-l border-gray-100 pl-4">
-                            <div class="text-center">
-                                <p class="text-lg font-serif italic text-gray-700 mb-2">"Dari Kami,<br>Untuk ASN Karangasem Menuju Karangasem Agung"</p>
-                                <!-- Decorative Ornament placeholder -->
-                                <i class="fas fa-seedling text-secondary text-2xl opacity-50"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
 
                 <!-- Integration Channels -->
                 <div id="kanal-integrasi" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover-slide-up scroll-mt-24">
                     <div class="bg-primary text-white px-5 py-4 flex items-center space-x-3">
                         <i class="fas fa-link text-xl text-blue-200"></i>
                         <div>
-                            <h3 class="font-bold text-lg leading-tight">Kanal Layanan Integrasi</h3>
-                            <p class="text-xs text-blue-100 font-light">Akses cepat ke berbagai kanal eksternal</p>
+                            <h3 class="font-bold text-lg leading-tight">Portal dan Kanal Terintegrasi</h3>
+                            <p class="text-xs text-blue-100 font-light">Akses cepat ke aplikasi dan kanal layanan ASN</p>
                         </div>
                     </div>
                     
@@ -949,28 +1391,28 @@
                                 </div>
                             </a>
 
-                            <!-- Card 5: Layanan Fungsional -->
+                            <!-- Card 5: Layanan Sadari Jafung Fungsional  -->
                             <a href="https://www.sadarijafung-bkpsdm-karangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-teal-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-teal-50 relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-teal-500"></div>
-                                <i class="fas fa-user-md text-3xl text-teal-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Kanal Layanan<br>Fungsional</h4>
+                                <i class="fas fa-arrow-trend-up text-3xl text-teal-500 mb-3 group-hover:scale-110 transition-transform"></i>
+                                <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Kanal Layanan<br>Sadari Jafung</h4>
                                 <p class="text-[10px] text-gray-500 mb-3">Kanal layanan utama pengelolaan karier dan administrasi bagi Pegawai Negeri Sipil (PNS) dengan Jabatan Fungsional (JF)</p>
                                 <div class="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mx-auto group-hover:bg-teal-500 group-hover:text-white transition-colors">
                                     <i class="fas fa-external-link-alt text-xs"></i>
                                 </div>
                             </a>
-                            <!-- Card 6: Dashboard ASN -->
-                            <a href="https://bkpsdm.karangasemkab.go.id/" target="_blank" rel="noopener noreferrer" class="group block border border-blue-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-blue-50 relative overflow-hidden">
+                            <!-- Card 6: Jafung Online -->
+                            <a href="https://jafungonline-nv.blogspot.com/" target="_blank" rel="noopener noreferrer" class="group block border border-blue-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-blue-50 relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-blue-800"></div>
-                                <i class="fas fa-chart-pie text-3xl text-blue-800 mb-3 group-hover:scale-110 transition-transform"></i>
-                                <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Dashboard ASN</h4>
-                                <p class="text-[10px] text-gray-500 mb-3">Dashboard Statistik ASN BKPSDM Kabupaten Karangasem</p>
+                                <i class="fas fa-user-gear text-3xl text-blue-800 mb-3 group-hover:scale-110 transition-transform"></i>
+                                <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Jafung Online</h4>
+                                <p class="text-[10px] text-gray-500 mb-3">JAFUNG Online adalah platform digital untuk mendukung pengelolaan administrasi Jabatan Fungsional Pegawai Negeri Sipil di lingkungan Pemerintah Kabupaten Karangasem secara lebih mudah, terstruktur, transparan, dan terintegrasi.</p>
                                 <div class="w-6 h-6 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center mx-auto group-hover:bg-blue-800 group-hover:text-white transition-colors">
                                     <i class="fas fa-external-link-alt text-xs"></i>
                                 </div>
                             </a>
                           <!-- Card 7: Informasi Teknis Kepegawaian -->
-                            <a href="https://www.sidokuasn.my.id/" target="_blank" rel="noopener noreferrer" class="group block border border-emerald-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-emerald-50 relative overflow-hidden">
+                            <a id="informasi-panduan" href="https://www.sidokuasn.my.id/" target="_blank" rel="noopener noreferrer" class="group block border border-emerald-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-emerald-50 relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-emerald-800"></div>
                                 <i class="fas fa-file-alt text-3xl text-emerald-800 mb-3 group-hover:scale-110 transition-transform"></i>
                                 <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Informasi<br>Teknis Kepegawaian</h4>
@@ -994,8 +1436,8 @@
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-cogs text-xl text-blue-200"></i>
                         <div>
-                            <h3 class="font-bold text-lg leading-tight">Menu Layanan Teknis</h3>
-                            <p class="text-xs text-blue-100 font-light">Layanan kepegawaian dan informasi teknis ASN</p>
+                            <h3 class="font-bold text-lg leading-tight">Layanan Kepegawaian</h3>
+                            <p class="text-xs text-blue-100 font-light">Akses layanan administrasi dan proses kepegawaian ASN</p>
                         </div>
                     </div>
                     <!-- Lock Indicator -->
@@ -1327,28 +1769,34 @@
             </div>
         </div>
 
-        <!-- Tabel Riwayat (Responsif) -->
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-600 border-collapse">
+        <!-- Tabel Riwayat: kolom terukur, tooltip pertanyaan, tombol detail -->
+        <div class="consult-table-wrap">
+            <table class="consult-history-table text-sm text-left text-gray-600 border-collapse">
+                <colgroup>
+                    <col style="width:12%"><col style="width:18%"><col style="width:16%"><col style="width:22%"><col style="width:10%"><col style="width:15%"><col style="width:7%">
+                </colgroup>
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
                     <tr>
-                        <th class="px-4 py-3">Waktu</th>
-                        <th class="px-4 py-3">Nama / Instansi</th>
-                        <th class="px-4 py-3">Perihal / Jenis</th>
-                        <th class="px-4 py-3">Pertanyaan</th>
-                        <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3">Tindak Lanjut Admin</th>
+                        <th>Waktu</th><th>Nama / Instansi</th><th>Perihal / Jenis</th><th>Pertanyaan</th><th>Status</th><th>Tindak Lanjut Admin</th><th class="text-center">Detail</th>
                     </tr>
                 </thead>
                 <tbody id="tabel-riwayat-body">
-                    <tr>
-                        <td colspan="6" class="px-4 py-6 text-center text-gray-400">
-                            <i class="fas fa-spinner fa-spin mr-2"></i> Memuat riwayat konsultasi...
-                        </td>
-                    </tr>
+                    <tr><td colspan="7" class="px-4 py-6 text-center text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat riwayat konsultasi...</td></tr>
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Popup detail riwayat konsultasi -->
+<div id="consult-detail-modal" class="consult-detail-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="consult-detail-title">
+    <div class="consult-detail-card">
+        <div class="flex items-start justify-between gap-4 border-b border-gray-100 px-5 py-4 sm:px-6">
+            <div><p class="text-xs uppercase tracking-wider font-bold text-blue-600">Riwayat konsultasi</p><h3 id="consult-detail-title" class="text-xl font-bold text-gray-900 mt-1">Detail Konsultasi</h3></div>
+            <button type="button" onclick="tutupDetailKonsultasi()" class="consult-detail-close" aria-label="Tutup detail"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="consult-detail-content" class="px-5 py-5 sm:px-6 space-y-4"></div>
+        <div class="border-t border-gray-100 px-5 py-4 sm:px-6 flex justify-end"><button type="button" onclick="tutupDetailKonsultasi()" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">Tutup</button></div>
     </div>
 </div>
           
@@ -1387,6 +1835,8 @@
                     <div class="flex space-x-4">
                         <a href="https://www.youtube.com/@bkpsdm_karangasemkab" target="_blank" rel="noopener noreferrer" aria-label="YouTube BKPSDM Karangasem" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"><i class="fab fa-youtube"></i></a>
                         <a href="https://www.instagram.com/bkpsdm.karangasemkab/" target="_blank" rel="noopener noreferrer" aria-label="Instagram BKPSDM Karangasem" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                       <a href="https://web.facebook.com/bkpsdmkabkarangasem/" target="_blank" rel="noopener noreferrer" aria-label="Facebook BKPSDM Karangasem" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+                       <a href="https://www.tiktok.com/@bkpsdm_kabkarangasem" target="_blank" rel="noopener noreferrer" aria-label="Tiktok BKPSDM Karangasem" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"><i class="fab fa-tiktok"></i></a>
                         <a href="https://bkpsdm.karangasemkab.go.id/" target="_blank" rel="noopener noreferrer" aria-label="Website BKPSDM Karangasem" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-colors"><i class="fas fa-globe"></i></a>
                     </div>
                 </div>
@@ -1425,6 +1875,15 @@
         
         <!-- Modal Content -->
         <div class="auth-modal-card bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative z-10 mx-4 fade-in">
+            <aside class="auth-split-visual" aria-label="Informasi portal KLIK-ASN">
+                <div class="auth-visual-brand"><span class="auth-visual-brand-mark"><i class="fas fa-fingerprint"></i></span><span>KLIK-ASN</span></div>
+                <div>
+                    <div class="auth-visual-art" aria-hidden="true"><span class="auth-orbit"></span><span class="auth-orbit orbit-two"></span><span class="auth-glass-tile"><i class="fas fa-user-shield"></i></span></div>
+                    <div class="auth-visual-copy"><h3>Satu akses untuk layanan ASN.</h3><p>Kanal layanan informasi kepegawaian yang terintegrasi, praktis, dan dirancang untuk membantu Anda melayani dengan sepenuh hati.</p></div>
+                </div>
+                <div class="auth-visual-foot">BKPSDM Kabupaten Karangasem · Digital service</div>
+            </aside>
+            <section class="auth-form-pane">
             <button onclick="closeLoginModal()" class="auth-modal-close" aria-label="Tutup menu login" title="Tutup">
                 <i class="fas fa-times"></i>
             </button>
@@ -1439,7 +1898,7 @@
 
             <form onsubmit="handleLogin(event)">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">NIP / Username</label>
+                    <label for="nip-input" class="block text-sm font-medium text-gray-700 mb-1">NIP / Username</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-id-card text-gray-400"></i>
@@ -1448,7 +1907,7 @@
                     </div>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <label for="password-input" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-lock text-gray-400"></i>
@@ -1476,6 +1935,7 @@
             <div class="mt-6 text-center text-sm border-t pt-4 text-gray-600">
                 Mengalami kendala? <a href="#form-konsultasi" class="text-primary font-medium hover:underline" onclick="closeLoginModal()">Hubungi Helpdesk</a>
             </div>
+            </section>
         </div>
     </div>
 
@@ -1484,9 +1944,16 @@
     <div id="reset-modal" class="fixed inset-0 z-[60] hidden items-center justify-center">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeResetModal()"></div>
         <div class="auth-modal-card bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative z-10 mx-4 fade-in">
-            <button onclick="closeResetModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 transition-colors">
-                <i class="fas fa-times text-xl"></i>
-            </button>
+            <aside class="auth-split-visual" aria-label="Bantuan pemulihan akun KLIK-ASN">
+                <div class="auth-visual-brand"><span class="auth-visual-brand-mark"><i class="fas fa-fingerprint"></i></span><span>KLIK-ASN</span></div>
+                <div>
+                    <div class="auth-visual-art" aria-hidden="true"><span class="auth-orbit"></span><span class="auth-orbit orbit-two"></span><span class="auth-glass-tile"><i class="fas fa-key"></i></span></div>
+                    <div class="auth-visual-copy"><h3>Pulihkan akses Anda.</h3><p>Buat kata sandi baru dengan teliti. Demi keamanan, akun yang mengajukan reset akan menunggu persetujuan Admin sebelum dapat digunakan kembali.</p></div>
+                </div>
+                <div class="auth-visual-foot">Akses aman · Layanan digital ASN</div>
+            </aside>
+            <section class="auth-form-pane">
+            <button onclick="closeResetModal()" class="auth-modal-close" aria-label="Tutup reset password" title="Tutup"><i class="fas fa-times"></i></button>
             <div class="text-center mb-5">
                 <div class="auth-modern-icon w-14 h-14 text-white rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <i class="fas fa-key text-xl"></i>
@@ -1497,14 +1964,14 @@
             <div id="reset-message" class="auth-message" role="alert"></div>
             <form onsubmit="handleResetPassword(event)">
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">NIP / Username</label>
+                    <label for="reset-nip-input" class="block text-sm font-medium text-gray-700 mb-1">NIP / Username</label>
                     <div class="relative auth-input-wrap">
                         <i class="fas fa-id-card absolute left-3 top-3 text-gray-400"></i>
                         <input type="text" id="reset-nip-input" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Masukkan NIP Anda" autocomplete="username" required>
                     </div>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
+                    <label for="reset-password-input" class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
                     <div class="relative auth-input-wrap">
                         <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
                         <input type="password" id="reset-password-input" class="w-full pl-10 pr-11 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Minimal 6 karakter" minlength="6" autocomplete="new-password" required>
@@ -1514,7 +1981,7 @@
                     </div>
                 </div>
                 <div class="mb-5">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password Baru</label>
+                    <label for="reset-password-confirm" class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password Baru</label>
                     <div class="relative auth-input-wrap">
                         <i class="fas fa-lock absolute left-3 top-3 text-gray-400"></i>
                         <input type="password" id="reset-password-confirm" class="w-full pl-10 pr-11 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Ulangi password baru" minlength="6" autocomplete="new-password" required>
@@ -1530,6 +1997,7 @@
             <div class="mt-5 text-center text-xs text-gray-500 border-t pt-4">
                 Setelah reset, akun berstatus <strong>Non Active</strong> sampai disetujui Admin.
             </div>
+            </section>
         </div>
     </div>
 
@@ -1626,11 +2094,11 @@ function muatRiwayatKonsultasi() {
     const inputCari = document.getElementById("cari-konsultasi");
     
     // Reset kolom input pencarian setiap kali melakukan refresh data keras
-    inputCari.value = ""; 
+    if (inputCari) inputCari.value = ""; 
     
     tbody.innerHTML = `
         <tr>
-            <td colspan="6" class="px-4 py-6 text-center text-gray-400">
+            <td colspan="7" class="px-4 py-6 text-center text-gray-400">
                 <i class="fas fa-spinner fa-spin mr-2"></i> Membarui daftar tiket...
             </td>
         </tr>
@@ -1649,7 +2117,7 @@ function muatRiwayatKonsultasi() {
             console.error("Error mengambil data:", error);
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="6" class="px-4 py-6 text-center text-red-500">
+                    <td colspan="7" class="px-4 py-6 text-center text-red-500">
                         <i class="fas fa-exclamation-triangle mr-2"></i> Gagal memuat data riwayat. Periksa koneksi jaringan atau URL API.
                     </td>
                 </tr>
@@ -1657,61 +2125,79 @@ function muatRiwayatKonsultasi() {
         });
 }
 
-// Fungsi Bantu: Membuat baris HTML berdasarkan array data yang disuplai
+// Escape nilai dari API sebelum dimasukkan ke markup.
+function escapeKLIK(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+// Fungsi Bantu: render tabel dengan kolom proporsional + tombol lihat detail.
 function tampilkanDataKeTabel(dataArray) {
     const tbody = document.getElementById("tabel-riwayat-body");
-    tbody.innerHTML = ""; // Bersihkan tabel terlebih dahulu
-
-    if (dataArray.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="6" class="px-4 py-6 text-center text-gray-400">Tidak ada riwayat data konsultasi yang cocok ditemukan.</td>
-            </tr>
-        `;
+    tbody.innerHTML = "";
+    window.dataKonsultasiTampil = Array.isArray(dataArray) ? dataArray : [];
+    if (!Array.isArray(dataArray) || dataArray.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-gray-400">Tidak ada riwayat data konsultasi yang cocok ditemukan.</td></tr>';
         return;
     }
-
-    dataArray.forEach(item => {
-        // Pembuatan badge status berwarna dinamis
-        let statusBadge = "";
-        if (item.status === "Menunggu") {
-            statusBadge = `<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><i class="far fa-clock mr-1"></i>Menunggu</span>`;
-        } else if (item.status === "Proses" || item.status === "Diproses") {
-            statusBadge = `<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"><i class="fas fa-spinner fa-spin mr-1"></i>Diproses</span>`;
-        } else if (item.status === "Selesai") {
-            statusBadge = `<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><i class="fas fa-check-circle mr-1"></i>Selesai</span>`;
-        } else {
-            statusBadge = `<span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">${item.status}</span>`;
-        }
-
-        const row = document.createElement("tr");
-        row.className = "border-b border-gray-100 hover:bg-gray-50/50 transition-colors";
+    dataArray.forEach((item, index) => {
+        const status = String(item.status || 'Belum ada status');
+        let statusBadge = '';
+        if (/menunggu/i.test(status)) statusBadge = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><i class="far fa-clock mr-1"></i>Menunggu</span>';
+        else if (/proses|diproses/i.test(status)) statusBadge = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"><i class="fas fa-spinner mr-1"></i>Diproses</span>';
+        else if (/selesai/i.test(status)) statusBadge = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><i class="fas fa-check-circle mr-1"></i>Selesai</span>';
+        else statusBadge = `<span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-700">${escapeKLIK(status)}</span>`;
+        const safeTime = escapeKLIK(item.waktu || '-');
+        const safeName = escapeKLIK(item.nama || '-');
+        const safePlace = escapeKLIK(item.tempatTugas || '-');
+        const safeBidang = escapeKLIK(item.bidang || '-');
+        const safeJenis = escapeKLIK(item.jenis || '-');
+        const safeQuestion = escapeKLIK(item.keterangan || '-');
+        const safeFollowup = escapeKLIK(item.hasil || '-');
+        const row = document.createElement('tr');
+        row.className = 'border-b border-gray-100 transition-colors';
         row.innerHTML = `
-            <td class="px-4 py-3.5 text-xs whitespace-nowrap text-gray-500">${item.waktu}</td>
-            <td class="px-4 py-3.5 font-medium text-gray-900">
-                ${item.nama}
-                <div class="text-xs text-gray-400 font-normal mt-0.5">${item.tempatTugas}</div>
-            </td>
-            <td class="px-4 py-3.5 text-xs text-gray-500">
-                <span class="block text-gray-700 font-medium">${item.bidang}</span>
-                <span class="text-gray-400">${item.jenis}</span>
-            </td>
-            <td class="px-4 py-3.5 max-w-xs truncate text-gray-600" title="${item.keterangan}">${item.keterangan}</td>
-            <td class="px-4 py-3.5">${statusBadge}</td>
-            <td class="px-4 py-3.5 text-gray-700 font-normal bg-gray-50/30">${item.hasil || '-'}</td>
+            <td class="text-xs whitespace-normal text-gray-500">${safeTime}</td>
+            <td class="font-semibold text-gray-900">${safeName}<div class="text-xs text-gray-500 font-normal mt-1">${safePlace}</div></td>
+            <td class="text-xs text-gray-600"><span class="block text-gray-800 font-semibold">${safeBidang}</span><span class="text-gray-500 block mt-1">${safeJenis}</span></td>
+            <td><span class="consult-question text-xs text-gray-600" title="${safeQuestion}">${safeQuestion}</span></td>
+            <td>${statusBadge}</td>
+            <td class="text-xs text-gray-700"><span class="consult-followup" title="${safeFollowup}">${safeFollowup}</span></td>
+            <td class="text-center"><button type="button" class="consult-detail-btn" onclick="bukaDetailKonsultasi(${index})" aria-label="Lihat detail konsultasi ${safeName}"><i class="fas fa-eye"></i><span>Lihat</span></button></td>
         `;
+        // Store original item index safely; popup uses the filtered data currently displayed.
+        row.dataset.consultIndex = String(index);
         tbody.appendChild(row);
     });
 }
 
+function bukaDetailKonsultasi(index) {
+    const item = (window.dataKonsultasiTampil || [])[index];
+    if (!item) return;
+    const fields = [
+        ['Waktu', item.waktu], ['Nama', item.nama], ['Instansi / Tempat Tugas', item.tempatTugas],
+        ['Perihal / Bidang', item.bidang], ['Jenis Konsultasi', item.jenis], ['Pertanyaan', item.keterangan],
+        ['Status', item.status], ['Tindak Lanjut Admin', item.hasil]
+    ];
+    document.getElementById('consult-detail-content').innerHTML = fields.map(([label, value]) => `<div class="consult-detail-field"><div class="consult-detail-label">${escapeKLIK(label)}</div><div class="consult-detail-value">${escapeKLIK(value || '-')}</div></div>`).join('');
+    const modal = document.getElementById('consult-detail-modal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('consult-detail-title').textContent = `Detail Konsultasi — ${item.nama || 'Pengguna'}`;
+}
+function tutupDetailKonsultasi() {
+    const modal = document.getElementById('consult-detail-modal');
+    if (modal) modal.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', event => { if (event.key === 'Escape') tutupDetailKonsultasi(); });
 // Fungsi Inti Fitur Pencarian Dinamis (Keyup Event)
 function filterRiwayat() {
     const kataKunci = document.getElementById("cari-konsultasi").value.toLowerCase();
     
     // Filter data array lokal berdasarkan Nama atau Tempat Tugas (Instansi)
     const dataTerfilter = semuaDataKonsultasi.filter(item => {
-        const namaCocok = item.nama.toLowerCase().includes(kataKunci);
-        const tugasCocok = item.tempatTugas.toLowerCase().includes(kataKunci);
+        const namaCocok = String(item.nama || '').toLowerCase().includes(kataKunci);
+        const tugasCocok = String(item.tempatTugas || '').toLowerCase().includes(kataKunci);
         
         return namaCocok || tugasCocok;
     });
@@ -1725,7 +2211,65 @@ function filterRiwayat() {
                  
           
     <script>
+        // Kabar ASN Karangasem: feed otomatis hanya aktif jika endpoint agregator/API resmi dikonfigurasi.
+        // Endpoint harus mengembalikan JSON array [{title, source, url, date}]. Jangan menaruh token rahasia di HTML.
+        const KLIK_SOCIAL_FEED_ENDPOINT = ''; // Isi URL endpoint backend milik instansi bila sudah tersedia.
+        async function muatKabarASN() {
+            const status = document.getElementById('social-feed-status');
+            const target = document.getElementById('social-feed-items');
+            if (!target || !status) return;
+            if (!KLIK_SOCIAL_FEED_ENDPOINT) {
+                status.textContent = 'Pilih kanal untuk melihat hasil publik. Informasi akan diarahkan ke Website Resmi dan Media Sosial BKPSDM Kabupaten Karangasem';
+                target.innerHTML = '';
+                return;
+            }
+            status.textContent = 'Memuat kabar ASN dari sumber terhubung…';
+            try {
+                const response = await fetch(KLIK_SOCIAL_FEED_ENDPOINT, {cache:'no-store'});
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const payload = await response.json();
+                const items = Array.isArray(payload) ? payload : (Array.isArray(payload.items) ? payload.items : []);
+                target.innerHTML = items.slice(0,4).map(item => {
+                    const title = escapeKLIK(item.title || item.caption || 'Buka informasi');
+                    const source = escapeKLIK(item.source || 'Media sosial');
+                    const url = String(item.url || item.permalink || '#');
+                    const safeUrl = /^(https?:\/\/)/i.test(url) ? escapeKLIK(url) : '#';
+                    const date = escapeKLIK(item.date || item.timestamp || '');
+                    return `<a class="social-feed-item" href="${safeUrl}" target="_blank" rel="noopener noreferrer"><span class="social-feed-source">${source}${date ? ' · '+date : ''}</span><span class="social-feed-title">${title}</span></a>`;
+                }).join('');
+                status.textContent = items.length ? `Menampilkan ${Math.min(items.length,4)} informasi terbaru dari sumber terhubung.` : 'Belum ada unggahan publik yang tersedia dari sumber terhubung.';
+            } catch (error) {
+                console.warn('Feed sosial KLIK-ASN tidak dapat dimuat:', error);
+                status.textContent = 'Feed otomatis belum dapat dimuat. Silakan gunakan tautan kanal publik di atas.';
+                target.innerHTML = '';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', muatKabarASN);
+
         // UI Toggle Functions
+        function toggleNavDropdown(button) {
+            const group = button?.closest('.nav-menu-group');
+            if (!group) return;
+            const willOpen = !group.classList.contains('nav-open');
+            closeNavDropdowns();
+            if (willOpen) {
+                group.classList.add('nav-open');
+                button.setAttribute('aria-expanded', 'true');
+            }
+        }
+        function closeNavDropdowns() {
+            document.querySelectorAll('.nav-menu-group.nav-open').forEach(group => {
+                group.classList.remove('nav-open');
+                group.querySelector('button[aria-haspopup="true"]')?.setAttribute('aria-expanded', 'false');
+            });
+        }
+        document.addEventListener('click', event => {
+            if (!event.target.closest('.nav-menu-group')) closeNavDropdowns();
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeNavDropdowns();
+        });
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
@@ -1856,13 +2400,41 @@ function filterRiwayat() {
             icon.className = input.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
         }
 
+        // Kunci scroll tanpa menggeser layout/header ketika scrollbar halaman menghilang.
+        let authSavedScrollY = 0;
+        let authPreviousBodyPaddingRight = '';
+        let authPreviousBodyOverflow = '';
+        let authPreviousHtmlOverflow = '';
+        function lockPageForAuth() {
+            if (document.body.classList.contains('auth-overlay-open')) return;
+            authSavedScrollY = window.scrollY || window.pageYOffset || 0;
+            authPreviousBodyPaddingRight = document.body.style.paddingRight;
+            authPreviousBodyOverflow = document.body.style.overflow;
+            authPreviousHtmlOverflow = document.documentElement.style.overflow;
+            const scrollbarGap = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+            document.documentElement.style.setProperty('--auth-scrollbar-gap', `${scrollbarGap}px`);
+            if (scrollbarGap > 0) document.body.style.paddingRight = `${scrollbarGap}px`;
+            document.body.classList.add('auth-overlay-open');
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        }
+        function unlockPageAfterAuth() {
+            document.body.classList.remove('auth-overlay-open');
+            document.body.style.overflow = authPreviousBodyOverflow || '';
+            document.documentElement.style.overflow = authPreviousHtmlOverflow || '';
+            document.body.style.paddingRight = authPreviousBodyPaddingRight || '';
+            document.documentElement.style.removeProperty('--auth-scrollbar-gap');
+            // Memulihkan posisi scroll persis ke posisi sebelum modal dibuka.
+            window.scrollTo({ top: authSavedScrollY, left: 0, behavior: 'instant' });
+        }
+
         function openLoginModal() {
             const modal = document.getElementById('login-modal');
             if (!modal) return;
             clearAuthMessage('auth-message');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            document.body.style.overflow = 'hidden';
+            lockPageForAuth();
             setTimeout(() => document.getElementById('nip-input')?.focus(), 100);
         }
 
@@ -1871,7 +2443,7 @@ function filterRiwayat() {
             if (!modal) return;
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.body.style.overflow = 'auto';
+            unlockPageAfterAuth();
         }
 
         function openResetModal() {
@@ -1888,7 +2460,7 @@ function filterRiwayat() {
             document.getElementById('reset-password-confirm-toggle-icon').className = 'fas fa-eye';
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            document.body.style.overflow = 'hidden';
+            lockPageForAuth();
             setTimeout(() => document.getElementById('reset-nip-input')?.focus(), 100);
         }
 
@@ -1897,7 +2469,7 @@ function filterRiwayat() {
             if (!modal) return;
             modal.classList.add('hidden');
             modal.classList.remove('flex');
-            document.body.style.overflow = 'auto';
+            unlockPageAfterAuth();
         }
 
         async function postAuth(payload) {
@@ -2084,6 +2656,14 @@ function filterRiwayat() {
             // Tampilkan nama lengkap pada header desktop & mobile
             document.getElementById('desktop-user-name').textContent = userName;
             document.getElementById('mobile-user-name').textContent = userName;
+            const profileCard = document.getElementById('login-panel-profile');
+            if (profileCard) profileCard.classList.remove('hidden');
+            const profileName = document.getElementById('login-panel-user-name');
+            const profileNip = document.getElementById('login-panel-user-nip');
+            if (profileName) profileName.textContent = userName;
+            if (profileNip) profileNip.textContent = userData && userData.nip ? `NIP: ${userData.nip}` : '';
+            const avatar = document.getElementById('login-panel-avatar');
+            if (avatar) avatar.innerHTML = '<i class="fas fa-user-check text-xl"></i>';
 
             // Ubah tampilan header: Login -> Nama Lengkap + Logout
             document.getElementById('desktop-login-btn').classList.add('hidden');
@@ -2095,7 +2675,7 @@ function filterRiwayat() {
             document.getElementById('mobile-user-area').classList.remove('hidden');
 
             // Tombol pada panel Login menjadi Dashboard Saya
-            const loginPanelBtn = document.querySelector('.lg\\:col-span-1 > div:first-child button');
+            const loginPanelBtn = document.querySelector('#login-status-panel button');
             if (loginPanelBtn) {
                 loginPanelBtn.innerHTML = '<i class="fas fa-tachometer-alt mr-2"></i> Dashboard Saya';
                 loginPanelBtn.classList.replace('bg-primary', 'bg-green-600');
@@ -2104,7 +2684,7 @@ function filterRiwayat() {
             }
 
             // Update panel text
-            const loginPanel = document.querySelector('.lg\\:col-span-1 > div:first-child');
+            const loginPanel = document.getElementById('login-status-panel');
             if (loginPanel) {
                 const panelTitle = loginPanel.querySelector('h3');
                 const panelSubtitle = loginPanel.querySelector('p');
@@ -2148,9 +2728,17 @@ function filterRiwayat() {
             // Kosongkan nama yang ditampilkan
             document.getElementById('desktop-user-name').textContent = '';
             document.getElementById('mobile-user-name').textContent = '';
+            const profileCard = document.getElementById('login-panel-profile');
+            if (profileCard) profileCard.classList.add('hidden');
+            const profileName = document.getElementById('login-panel-user-name');
+            const profileNip = document.getElementById('login-panel-user-nip');
+            if (profileName) profileName.textContent = '';
+            if (profileNip) profileNip.textContent = '';
+            const avatar = document.getElementById('login-panel-avatar');
+            if (avatar) avatar.innerHTML = '<i class="fas fa-user-lock text-xl"></i>';
 
             // Kembalikan tombol panel
-            const loginPanelBtn = document.querySelector('.lg\\:col-span-1 > div:first-child button');
+            const loginPanelBtn = document.querySelector('#login-status-panel button');
             if (loginPanelBtn) {
                 loginPanelBtn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i> Masuk';
                 loginPanelBtn.classList.replace('bg-green-600', 'bg-primary');
@@ -2159,7 +2747,7 @@ function filterRiwayat() {
             }
 
             // Kembalikan panel status
-            const loginPanel = document.querySelector('.lg\\:col-span-1 > div:first-child');
+            const loginPanel = document.getElementById('login-status-panel');
             if (loginPanel) {
                 const panelTitle = loginPanel.querySelector('h3');
                 const panelSubtitle = loginPanel.querySelector('p');
@@ -2244,7 +2832,7 @@ function filterRiwayat() {
             formASN: {
                 title: 'Form ASN Inspiratif',
                 subtitle: 'Form layanan ASN Inspiratif',
-                url: 'https://bkpsdm-karangasemkab.github.io/ASN-INSPIRATIF/'
+                url: 'https://script.google.com/macros/s/AKfycbx6aCx63D2yiYJlmciYU4SiV4WgMMJQIxWimMiZwqHft5sibLTs9FjfYKb5nKiMQr9oeQ/exec'
             },
             fungsional: {
                 title: 'Layanan Fungsional',
