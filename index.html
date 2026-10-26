@@ -573,18 +573,23 @@
         .auth-primary-btn:hover::before { transform: translateX(120%); }
         .auth-password-toggle:hover { color:#0f4c81; }
 
-        /* Search header */
-        #search-bar { position: relative; }
-        #search-results {
-            position: absolute; left: 50%; transform: translateX(-50%); top: calc(100% + 4px);
-            width: min(680px, calc(100% - 20px)); max-height: 330px; overflow-y: auto;
-            background: rgba(255,255,255,.98); backdrop-filter: blur(18px);
-            border: 1px solid rgba(15,76,129,.12); border-radius: 16px;
-            box-shadow: 0 18px 45px rgba(10,50,84,.16); z-index: 80; padding: 8px;
-        }
-        .search-result-item { display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:10px 12px; border-radius:11px; color:#24435c; }
+        /* Panel pencarian elegan, berada tepat di bawah header dan responsif */
+        #search-bar { position:fixed; z-index:10010; top:calc(var(--klik-header-height, 92px) + 8px); left:50%; transform:translateX(-50%); width:min(920px, calc(100% - 32px)); padding:0; }
+        .search-shell { position:relative; padding:16px; border:1px solid rgba(15,76,129,.14); border-radius:22px; background:rgba(255,255,255,.97); backdrop-filter:blur(20px); box-shadow:0 22px 65px rgba(10,50,84,.20); }
+        .search-input-wrap { display:flex; align-items:center; gap:12px; min-height:54px; padding:0 12px 0 16px; border:1px solid #d9e5ef; border-radius:15px; background:#f8fbff; transition:border-color .2s, box-shadow .2s; }
+        .search-input-wrap:focus-within { border-color:#3b70a1; box-shadow:0 0 0 4px rgba(59,112,161,.10); background:#fff; }
+        .search-leading-icon { color:#0f4c81; font-size:17px; }
+        .search-input-wrap input { min-width:0; border:0; outline:0; background:transparent; color:#173c59; font-size:15px; }
+        .search-input-wrap input:focus { outline:0; box-shadow:none; }
+        .search-close-btn { width:36px; height:36px; flex:0 0 auto; border-radius:11px; color:#61778a; background:#eaf1f7; transition:all .2s; }
+        .search-close-btn:hover { color:white; background:#0f4c81; }
+        .search-hint { display:flex; align-items:center; gap:7px; margin:10px 4px 2px; color:#708397; font-size:11px; }
+        #search-results { position:relative; width:100%; max-height:min(45vh,360px); overflow-y:auto; margin-top:10px; background:#fff; border:1px solid rgba(15,76,129,.10); border-radius:15px; box-shadow:0 10px 25px rgba(10,50,84,.07); padding:7px; }
+        .search-result-item { display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:11px 12px; border-radius:11px; color:#24435c; }
         .search-result-item:hover { background:#eef6ff; color:#0f4c81; }
+        .search-result-lock { margin-left:auto; flex:0 0 auto; color:#b7791f; font-size:11px; font-weight:700; white-space:nowrap; }
         .search-empty { padding:16px; text-align:center; color:#718096; font-size:.85rem; }
+        @media (max-width:767px) { #search-bar { top:72px; width:calc(100% - 16px); } .search-shell { padding:10px; border-radius:17px; } .search-input-wrap { min-height:49px; gap:9px; padding-left:12px; } .search-input-wrap input { font-size:13px; } .search-hint { font-size:10px; line-height:1.4; } }
 
         /* FAQ modal */
         .faq-modal-backdrop { position:fixed; inset:0; z-index:10020; background:rgba(5,30,55,.62); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:20px; }
@@ -642,6 +647,26 @@
             header.klik-asn-header > div { padding-left:14px; padding-right:14px; }
         }
 
+
+        /* Panel Login / Akses semua layanan: perubahan status langsung dan halus. */
+        #login-status-panel {
+            transition: border-color .12s ease, box-shadow .12s ease, background-color .12s ease;
+            contain: layout style;
+        }
+        #login-status-panel .login-panel-heading,
+        #login-panel-profile,
+        #login-status-panel .login-panel-action {
+            transition: opacity .12s ease, transform .12s ease, background-color .12s ease;
+        }
+        #login-status-panel [aria-live="polite"] { min-height: 1rem; }
+        #login-status-panel.login-panel-refresh { animation: loginPanelRefresh .22s ease-out; }
+        @keyframes loginPanelRefresh {
+            0% { opacity: .78; transform: translateY(2px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #login-status-panel, #login-status-panel *, #login-panel-profile { transition: none !important; }
+        }
 
         /* Stabilkan posisi header dan lebar layout saat modal login/reset dibuka atau ditutup. */
         html { scrollbar-gutter: stable; }
@@ -1049,7 +1074,33 @@
             #info-portal-iframe{height:72vh;min-height:600px}
         }
 
-    </style>
+    
+        /* Layanan konsultasi online — desain modern, responsif, dan konsisten dengan KLIK-ASN */
+        .consult-service-section{margin:3rem 0 1rem;scroll-margin-top:100px}
+        .consult-service-heading{display:flex;align-items:center;gap:18px;padding:24px 26px;margin-bottom:18px;border:1px solid #dce8f4;border-radius:24px;background:linear-gradient(115deg,#fff 0%,#f4f8ff 58%,#eef5ff 100%);box-shadow:0 12px 34px rgba(15,76,129,.07)}
+        .consult-heading-icon{width:60px;height:60px;flex:0 0 60px;display:flex;align-items:center;justify-content:center;border-radius:19px;color:#fff;font-size:25px;background:linear-gradient(145deg,#1765a5,#0a3254);box-shadow:0 9px 20px rgba(15,76,129,.22)}
+        .consult-heading-copy{min-width:0;flex:1}.consult-eyebrow,.consult-access-kicker{display:block;color:#2872aa;font-size:10px;font-weight:850;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
+        .consult-heading-copy h2{font-size:clamp(20px,2.4vw,28px);line-height:1.2;font-weight:800;color:#102e4d;letter-spacing:-.035em;margin:0}
+        .consult-heading-copy p{font-size:13px;line-height:1.65;color:#64748b;margin:7px 0 0;max-width:700px}
+        .consult-secure-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #d5e7f8;border-radius:999px;background:rgba(255,255,255,.8);color:#28618d;font-size:11px;font-weight:750;white-space:nowrap}
+        .consult-access-card{position:relative;display:flex;align-items:center;gap:26px;padding:28px;overflow:hidden;border:1px solid #dce7f3;border-radius:26px;background:linear-gradient(120deg,#fff 0%,#f8fbff 53%,#edf5ff 100%);box-shadow:0 18px 45px rgba(15,45,75,.08);transition:padding .25s ease,box-shadow .25s ease}
+        .consult-access-card:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-100px;top:-140px;background:radial-gradient(circle,rgba(59,130,246,.13),rgba(59,130,246,0));pointer-events:none}
+        .consult-access-art{position:relative;display:flex;align-items:center;justify-content:center;flex:0 0 112px;width:112px;height:112px;border-radius:30px;background:linear-gradient(145deg,#e4f1ff,#c9e1fa);color:#12568c;font-size:42px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)}
+        .consult-art-orbit{position:absolute;border:1px solid rgba(18,86,140,.18);border-radius:50%;width:82px;height:82px}.orbit-two{width:98px;height:98px;border-style:dashed}
+        .consult-access-copy{position:relative;z-index:1;flex:1;min-width:0}.consult-access-copy h3{font-size:clamp(19px,2vw,24px);font-weight:800;letter-spacing:-.025em;color:#132f4b;margin:0 0 8px}
+        .consult-access-copy p{font-size:13px;line-height:1.7;color:#64748b;margin:0 0 18px;max-width:620px}
+        .consult-access-button{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 17px;border:0;border-radius:13px;background:linear-gradient(110deg,#1765a5,#0b3b67);color:#fff;font-size:12px;font-weight:800;box-shadow:0 8px 18px rgba(15,76,129,.2);transition:transform .2s ease,box-shadow .2s ease;cursor:pointer}
+        .consult-access-button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 24px rgba(15,76,129,.25)}.consult-access-button:disabled{opacity:.8;cursor:default}.consult-button-arrow{margin-left:5px}
+        .consult-access-side-note{position:relative;z-index:1;display:flex;align-items:center;gap:10px;padding:13px 15px;border-radius:15px;background:rgba(255,255,255,.8);border:1px solid #e1ebf5;color:#52718c;font-size:10px;line-height:1.55;font-weight:700;white-space:nowrap}.consult-access-side-note i{font-size:20px;color:#2b7cbb}
+        .consult-access-card-compact{padding:17px 22px;border-radius:19px;box-shadow:none}.consult-access-card-compact .consult-access-art,.consult-access-card-compact .consult-access-side-note{display:none}.consult-access-card-compact .consult-access-copy p{margin-bottom:0}.consult-access-card-compact .consult-access-button{display:none}
+        .consult-frame-shell{margin-top:18px;overflow:hidden;border:1px solid #d7e4f0;border-radius:22px;background:#fff;box-shadow:0 20px 55px rgba(12,45,76,.12);scroll-margin-top:90px}.consult-frame-shell.hidden{display:none!important}
+        .consult-frame-toolbar{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 18px;background:linear-gradient(100deg,#0b2f50,#124e7c);color:#fff}
+        .consult-frame-status{display:flex;align-items:center;gap:11px;min-width:0}.consult-live-dot{width:9px;height:9px;border-radius:50%;background:#63e6be;box-shadow:0 0 0 5px rgba(99,230,190,.13);flex:0 0 auto}.consult-frame-status strong{display:block;font-size:12px;font-weight:800}.consult-frame-status small{display:block;color:#c7dced;font-size:10px;margin-top:3px}
+        .consult-frame-actions{display:flex;align-items:center;gap:8px}.consult-tool-button{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.1);color:#fff;font-size:11px;font-weight:750;white-space:nowrap}.consult-tool-button:hover{background:rgba(255,255,255,.2)}
+        .consult-frame-wrap{position:relative;min-height:680px;background:#f8fafc}.consult-frame-wrap iframe{display:block;width:100%;height:clamp(680px,82vh,1100px);border:0;background:#fff}.consult-frame-loading{position:absolute;z-index:2;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:#f8fbff;color:#31506c;font-size:13px}.consult-frame-loading.is-hidden{display:none!important}.consult-frame-loading small{font-size:11px;color:#8192a4}.consult-loader{width:34px;height:34px;border:3px solid #d9e8f6;border-top-color:#1765a5;border-radius:50%;animation:consultSpin .8s linear infinite}@keyframes consultSpin{to{transform:rotate(360deg)}}
+        @media(max-width:800px){.consult-service-heading{padding:19px;gap:13px;flex-wrap:wrap;border-radius:20px}.consult-heading-icon{width:50px;height:50px;flex-basis:50px;border-radius:15px;font-size:21px}.consult-secure-chip{margin-left:63px}.consult-access-card{padding:22px;gap:18px;flex-wrap:wrap;border-radius:22px}.consult-access-art{width:82px;height:82px;flex-basis:82px;border-radius:23px;font-size:32px}.consult-art-orbit{width:63px;height:63px}.orbit-two{width:73px;height:73px}.consult-access-side-note{display:none}.consult-frame-wrap,.consult-frame-wrap iframe{min-height:620px;height:78vh}.consult-frame-toolbar{padding:12px;align-items:flex-start}.consult-tool-button{padding:8px}.consult-tool-button span{display:none}}
+        @media(max-width:480px){.consult-service-section{margin-top:2rem}.consult-service-heading{padding:16px;border-radius:17px}.consult-heading-copy{flex-basis:calc(100% - 66px)}.consult-heading-copy p{font-size:12px}.consult-secure-chip{margin-left:0}.consult-access-card{padding:18px}.consult-access-art{width:64px;height:64px;flex-basis:64px;font-size:25px;border-radius:18px}.consult-art-orbit{width:49px;height:49px}.orbit-two{width:57px;height:57px}.consult-access-copy h3{font-size:19px}.consult-access-button{width:100%;padding:12px 10px}.consult-frame-status small{max-width:180px}.consult-frame-wrap,.consult-frame-wrap iframe{min-height:560px;height:72vh}}
+</style>
 </head>
 <body class="bg-background text-gray-800 font-sans antialiased flex flex-col min-h-screen">
 
@@ -1078,7 +1129,7 @@
 
                     <div class="nav-menu-group">
                         <button type="button" class="nav-main-link" aria-haspopup="true" onclick="toggleNavDropdown(this)">
-                            <i class="fas fa-briefcase mr-1.5"></i>Layanan Teknis<i class="fas fa-chevron-down nav-chevron"></i>
+                            <i class="fas fa-briefcase mr-1.5"></i>Layanan Kepegawaian <i class="fas fa-chevron-down nav-chevron"></i>
                         </button>
                         <div class="nav-dropdown">
                             <a href="#layanan-teknis" onclick="closeNavDropdowns()"><i class="fas fa-arrow-trend-up"></i>Cek Kenaikan Pangkat</a>
@@ -1111,8 +1162,6 @@
                         <div class="nav-dropdown">
                             <a href="#informasi-panduan" onclick="closeNavDropdowns()"><i class="fas fa-file-lines"></i>Informasi Teknis Kepegawaian</a>
                             <a href="#informasi-kepegawaian" onclick="closeNavDropdowns()"><i class="fas fa-newspaper"></i>Informasi Kepegawaian Terkini</a>
-                            <a href="#informasi-panduan" onclick="closeNavDropdowns()"><i class="fas fa-scale-balanced"></i>Regulasi dan Persyaratan</a>
-                            <a href="#informasi-panduan" onclick="closeNavDropdowns()"><i class="fas fa-route"></i>Alur dan Panduan Layanan</a>
                         </div>
                     </div>
 
@@ -1122,8 +1171,7 @@
                         </button>
                         <div class="nav-dropdown nav-dropdown-right">
                             <button type="button" onclick="bukaFaqModal();closeNavDropdowns()"><i class="fas fa-circle-question"></i>Pertanyaan Umum (FAQ)</button>
-                            <a href="#form-konsultasi" onclick="closeNavDropdowns()"><i class="fas fa-comments"></i>Konsultasi Kepegawaian</a>
-                            <a href="#form-konsultasi" onclick="closeNavDropdowns()"><i class="fas fa-envelope"></i>Hubungi BKPSDM</a>
+                            <a href="#form-konsultasi" onclick="closeNavDropdowns()"><i class="fas fa-comments"></i>Layanan Konsultasi</a>
                         </div>
                     </div>
 
@@ -1135,13 +1183,6 @@
                             <i class="fas fa-user-circle mr-2"></i> Login
                         </button>
                         <div id="desktop-user-area" class="hidden items-center gap-2">
-                            <div class="flex items-center bg-green-50 border border-green-200 text-green-800 px-3 py-2 rounded-full shadow-sm max-w-[240px]">
-                                <i class="fas fa-user-check mr-2 text-green-600"></i>
-                                <div class="leading-tight min-w-0">
-                                    <span class="block text-[10px] uppercase tracking-wide text-green-600 font-semibold">Pengguna</span>
-                                    <span id="desktop-user-name" class="block text-sm font-semibold truncate">Nama Lengkap</span>
-                                </div>
-                            </div>
                             <button id="desktop-logout-btn" onclick="logoutUser()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-full font-medium transition-colors shadow-sm flex items-center">
                                 <i class="fas fa-sign-out-alt mr-1.5"></i> Logout
                             </button>
@@ -1156,11 +1197,15 @@
 
             </div>
 
-            <!-- Search Bar (Hidden by default) -->
-            <div id="search-bar" class="hidden pb-4 pt-2 fade-in">
-                <div class="relative max-w-lg mx-auto">
-                    <input type="text" placeholder="Cari layanan, pengumuman, atau informasi..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary">
-                    <i class="fas fa-search absolute left-4 top-3 text-gray-400"></i>
+            <!-- Panel pencarian terpadu: muncul tepat di bawah header -->
+            <div id="search-bar" class="hidden fade-in" aria-label="Pencarian KLIK-ASN">
+                <div class="search-shell">
+                    <div class="search-input-wrap">
+                        <span class="search-leading-icon"><i class="fas fa-search"></i></span>
+                        <input type="search" autocomplete="off" aria-label="Cari layanan dan informasi" placeholder="Cari layanan, pengumuman, atau informasi..." class="w-full">
+                        <button type="button" class="search-close-btn" onclick="toggleSearch()" aria-label="Tutup pencarian" title="Tutup pencarian"><i class="fas fa-times"></i></button>
+                    </div>
+                    <p class="search-hint"><i class="fas fa-shield-alt"></i> Layanan yang memerlukan akses akan meminta Anda login terlebih dahulu.</p>
                     <div id="search-results" class="hidden" role="listbox" aria-label="Hasil pencarian"></div>
                 </div>
             </div>
@@ -1173,7 +1218,7 @@
                 <a href="#layanan-teknis" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-briefcase"></i>Layanan Kepegawaian</a>
                 <a href="#kanal-integrasi" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-layer-group"></i>Portal dan Kanal Terintegrasi</a>
                 <a href="#informasi-panduan" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-book-open"></i>Informasi dan Panduan</a>
-                <a href="#form-konsultasi" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-headset"></i>Konsultasi dan Bantuan</a>
+                <a href="#form-konsultasi" onclick="toggleMobileMenu()" class="mobile-nav-link"><i class="fas fa-headset"></i>Layanan Konsultasi</a>
                 <button type="button" onclick="bukaFaqModal();toggleMobileMenu()" class="mobile-nav-link text-left"><i class="fas fa-circle-question"></i>Pertanyaan Umum (FAQ)</button>
                 <div class="pt-3 mt-2 border-t border-gray-100">
                     <button id="mobile-login-btn" onclick="openLoginModal()" class="w-full bg-primary text-white px-4 py-2.5 rounded-xl font-semibold text-center shadow-sm">
@@ -1275,7 +1320,7 @@
             <div class="lg:col-span-1 space-y-6">
                  <!-- Login Panel -->
                 <div id="login-status-panel" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover-slide-up">
-                    <div class="flex items-center space-x-3 mb-4">
+                    <div class="login-panel-heading flex items-center space-x-3 mb-4" aria-live="polite">
                         <div id="login-panel-avatar" class="bg-blue-50 p-3 rounded-lg text-primary"><i class="fas fa-user-lock text-xl"></i></div>
                         <div class="min-w-0 flex-1">
                             <h3 class="font-bold text-gray-800 text-lg">Login</h3>
@@ -1289,7 +1334,7 @@
                         <div class="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-green-700"><span class="auth-status-dot"></span> Sesi aktif</div>
                     </div>
                     
-                    <button onclick="openLoginModal()" class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 rounded-lg transition-colors mb-3 shadow-sm">
+                    <button id="login-panel-action" onclick="openLoginModal()" class="login-panel-action w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 rounded-lg transition-colors mb-3 shadow-sm">
                         <i class="fas fa-sign-in-alt mr-2"></i> Masuk
                     </button>
                     
@@ -1394,7 +1439,7 @@
                         <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                             
                             <!-- Card 1: SIDOKUASN -->
-                            <a href="https://www.sidokuasn-bkpsdm-karangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-green-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-green-50 relative overflow-hidden">
+                            <a href="https://sidokuasn.bkpsdmkarangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-green-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-green-50 relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-green-500"></div>
                                 <i class="fas fa-cloud text-3xl text-green-500 mb-3 group-hover:scale-110 transition-transform"></i>
                                 <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Kanal Layanan<br>SIDOKUASN</h4>
@@ -1438,7 +1483,7 @@
                             </a>
 
                             <!-- Card 5: Layanan Sadari Jafung Fungsional  -->
-                            <a href="https://www.sadarijafung-bkpsdm-karangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-teal-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-teal-50 relative overflow-hidden">
+                            <a href="https://sadari-jafung.bkpsdmkarangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-teal-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-teal-50 relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-teal-500"></div>
                                 <i class="fas fa-arrow-trend-up text-3xl text-teal-500 mb-3 group-hover:scale-110 transition-transform"></i>
                                 <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Kanal Layanan<br>Sadari Jafung</h4>
@@ -1680,186 +1725,48 @@
             </div>
         </section>
 
-        <!-- Consultation Form Section -->
-        <div id="form-konsultasi" class="mt-12 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden scroll-mt-24">
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <div class="p-8 bg-blue-50 flex flex-col justify-center">
-                    <h3 class="text-2xl font-bold text-primary mb-3">Butuh Bantuan?</h3>
-                    <p class="text-gray-600 mb-6">Tim kami siap membantu Anda terkait informasi layanan kepegawaian. Silakan isi form di samping atau hubungi kami melalui saluran resmi.</p>
-                    <ul class="space-y-3">
-                        <li class="flex items-center text-gray-700">
-    <i class="fas fa-envelope text-primary w-6"></i> 
-    <a href="mailto:bkpsdm@gws.karangasemkab.go.id" class="hover:text-primary transition-colors">bkpsdm@gws.karangasemkab.go.id</a>
-
-<li class="flex items-center text-gray-700">
-    
-</li>
-  </ul>
-     </div>
-              
-  <body class="bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/50 min-h-screen text-slate-800 p-4 md:p-8">
-    
-    <!-- Toast Notification Container -->
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300"></div>
-
-    <div class="max-w-3xl mx-auto space-y-8">
-        
-        <!-- Header Banner -->
-        <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Layanan Kepegawaian</span>
-                <h1 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2">Portal Konsultasi Online</h1>
-                <p class="text-slate-500 text-sm mt-1">Ajukan pertanyaan atau konsultasi administrasi kepegawaian dengan mudah dan cepat.</p>
-            </div>
-            <div class="bg-blue-600 text-white p-4 rounded-2xl shadow-lg shadow-blue-500/30 hidden md:block">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-            </div>
-        </div>
-
-        <!-- Main Form Card -->
-        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-white">
-                <h2 class="font-semibold text-lg">Formulir Pengajuan Konsultasi</h2>
-                <p class="text-xs text-blue-100">Lengkapi data diri dan uraian permasalahan di bawah ini</p>
-            </div>
-    
-              
-<!-- Kolon Kanan: Form Konsultasi Baru Terintegrasi API -->       
-<div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-    <form id="formKonsultasiAPI" class="space-y-4">
-        
-        <!-- Input Nama -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-            <input type="text" id="api_nama" required
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" 
-                   placeholder="Masukkan nama lengkap Anda">
-        </div>
-
-        <!-- Input Tempat Tugas -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Tempat Tugas / Instansi</label>
-            <input type="text" id="api_tempatTugas" required
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" 
-                   placeholder="Nama Sekolah / Puskesmas / OPD">
-        </div>
-      
-      <!-- Input Jenis Layanan (Dropdown) -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Layanan / Usulan</label>
-            <select id="api_jenis" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white">
-                <option value="" disabled selected>Pilih Jenis Layanan...</option>
-                <option value="Kenaikan Pangkat">Kenaikan Pangkat (Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Pengukuhan Gelar & PMK">Pengukuhan Gelar dan PMK (Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Pensiun">Pensiun / Janda Duda (Bidang Pengadaan, Pemberhentian dan Informasi)</option>
-                <option value="Satyalancana">Satyalancana Karya Satya (Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Kenaikan Gaji Berkala">Kenaikan Gaji Berkala Pimpinan OPD(Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Cuti">Cuti (Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Disiplin">Disiplin ASN (Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Mutasi">Mutasi (Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Kinerja">Kinerja (Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur)</option>
-                <option value="Izin Belajar">Izin / Tugas Belajar (Bidang Pengembangan, Kompetensi Aparatur)</option>
-                <option value="Fungsional">Jabatan Fungsional dan Angka Kredit(Bidang Pengembangan, Kompetensi Aparatur)</option>
-                <option value="Karis/Karsu">Karis/Karsu (Bidang Pengadaan, Pemberhentian dan Informasi)</option>
-                <option value="Lainnya">Lain-lain (BKPSDM, Sekretariat)</option>
-            </select>
-        </div>
-
-        <!-- Input Bidang (Dropdown) -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Urusan Kepegawaian yang dituju</label>
-            <select id="api_bidang" required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white">
-                <option value="" disabled selected>Pilih Opsi...</option>
-                <option value="BKPSDM">BKPSDM</option>
-                <option value="Sekretariat">Sekretariat</option>
-                <option value="Bidang MPPKA">Bidang Mutasi, Promosi dan Penilaian Kinerja Aparatur</option>
-                <option value="Bidang PPI">Bidang Pengadaan, Pemberhentian dan Informasi</option>
-                <option value="Bidang PKA">Bidang Pengembangan, Kompetensi Aparatur</option>
-              </select>
-        </div>
-
-        <!-- Input Keterangan / Pesan -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Keterangan Masalah / Pertanyaan</label>
-            <textarea id="api_keterangan" rows="4" required
-                      class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm" 
-                      placeholder="Tuliskan secara detail hal yang ingin dikonsultasikan..."></textarea>
-            </div>
-     
-        <!-- Tombol Kirim -->
-        <button type="submit" id="btnKirimAPI"
-                class="w-full bg-primary hover:bg-primary-dark text-white font-medium py-2.5 px-4 rounded-md transition-colors flex items-center justify-center space-x-2 text-sm shadow">
-            <i class="fas fa-paper-plane" id="iconKirim"></i>
-            <span id="textKirim">Kirim Pesan Konsultasi</span>
-        </button>
-    </form>
-  </div>       
-</main>
-
-<!-- SECTION RIWAYAT KONSULTASI DENGAN FITUR PENCARIAN -->
- <div class="container mx-auto px-4 lg:px-8 my-12">
-    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        
-        <!-- Header Informasi -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <div>
-                <h2 class="text-2xl font-bold text-primary">Riwayat Konsultasi Publik</h2>
-                <p class="text-sm text-gray-500">Daftar seluruh tiket pertanyaan dan status penanganannya dari Admin</p>
-            </div>
-            
-            <!-- Aksi: Input Cari & Tombol Refresh -->
-            <div class="flex items-center gap-3 w-full md:w-auto">
-                <!-- Search Box -->
-                <div class="relative flex-1 md:w-64">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
-                        <i class="fas fa-search"></i>
-                    </span>
-                    <input type="text" id="cari-konsultasi" onkeyup="filterRiwayat()" 
-                           placeholder="Cari Nama / Tempat Tugas..." 
-                           class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm" />
+        <!-- LAYANAN KONSULTASI ONLINE: AKSES SETELAH LOGIN -->
+        <section id="form-konsultasi" class="consult-service-section scroll-mt-24" aria-labelledby="consult-service-title">
+            <div class="consult-service-heading">
+                <div class="consult-heading-icon"><i class="fas fa-headset"></i></div>
+                <div class="consult-heading-copy">
+                    <span class="consult-eyebrow">PUSAT BANTUAN ASN</span>
+                    <h2 id="consult-service-title">Layanan Konsultasi Kepegawaian</h2>
+                    <p>Akses layanan konsultasi resmi BKPSDM Kabupaten Karangasem dalam satu tampilan terpadu.</p>
                 </div>
-                
-                <!-- Tombol Refresh -->
-                <button onclick="muatRiwayatKonsultasi()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
+                <div class="consult-secure-chip"><i class="fas fa-shield-halved"></i><span>Akses terlindungi</span></div>
             </div>
-        </div>
 
-        <!-- Tabel Riwayat: kolom terukur, tooltip pertanyaan, tombol detail -->
-        <div class="consult-table-wrap">
-            <table class="consult-history-table text-sm text-left text-gray-600 border-collapse">
-                <colgroup>
-                    <col style="width:12%"><col style="width:18%"><col style="width:16%"><col style="width:22%"><col style="width:10%"><col style="width:15%"><col style="width:7%">
-                </colgroup>
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
-                    <tr>
-                        <th>Waktu</th><th>Nama / Instansi</th><th>Perihal / Jenis</th><th>Pertanyaan</th><th>Status</th><th>Tindak Lanjut Admin</th><th class="text-center">Detail</th>
-                    </tr>
-                </thead>
-                <tbody id="tabel-riwayat-body">
-                    <tr><td colspan="7" class="px-4 py-6 text-center text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i> Memuat riwayat konsultasi...</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+            <div id="consult-access-card" class="consult-access-card">
+                <div class="consult-access-art"><i class="fas fa-comments"></i><span class="consult-art-orbit orbit-one"></span><span class="consult-art-orbit orbit-two"></span></div>
+                <div class="consult-access-copy">
+                    <span class="consult-access-kicker">LAYANAN DIGITAL</span>
+                    <h3 id="consult-access-title">Login untuk melanjutkan</h3>
+                    <p id="consult-access-description">Silakan masuk menggunakan akun KLIK-ASN Anda terlebih dahulu untuk membuka formulir konsultasi online.</p>
+                    <button type="button" id="consult-access-button" class="consult-access-button" onclick="openConsultationService()">
+                        <i class="fas fa-lock"></i><span>Login dan Buka Konsultasi</span><i class="fas fa-arrow-right consult-button-arrow"></i>
+                    </button>
+                </div>
+                <div class="consult-access-side-note"><i class="fas fa-user-check"></i><span>Login diperlukan<br>sebelum akses layanan</span></div>
+            </div>
 
-<!-- Popup detail riwayat konsultasi -->
-<div id="consult-detail-modal" class="consult-detail-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="consult-detail-title">
-    <div class="consult-detail-card">
-        <div class="flex items-start justify-between gap-4 border-b border-gray-100 px-5 py-4 sm:px-6">
-            <div><p class="text-xs uppercase tracking-wider font-bold text-blue-600">Riwayat konsultasi</p><h3 id="consult-detail-title" class="text-xl font-bold text-gray-900 mt-1">Detail Konsultasi</h3></div>
-            <button type="button" onclick="tutupDetailKonsultasi()" class="consult-detail-close" aria-label="Tutup detail"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="consult-detail-content" class="px-5 py-5 sm:px-6 space-y-4"></div>
-        <div class="border-t border-gray-100 px-5 py-4 sm:px-6 flex justify-end"><button type="button" onclick="tutupDetailKonsultasi()" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">Tutup</button></div>
-    </div>
-</div>
-          
-          
+            <div id="consult-frame-shell" class="consult-frame-shell hidden" aria-live="polite">
+                <div class="consult-frame-toolbar">
+                    <div class="consult-frame-status"><span class="consult-live-dot"></span><div><strong>Layanan Konsultasi Aktif</strong><small>Terhubung ke portal konsultasi resmi</small></div></div>
+                    <div class="consult-frame-actions">
+                        <button type="button" class="consult-tool-button" onclick="reloadConsultationService()" title="Muat ulang layanan"><i class="fas fa-rotate-right"></i><span>Segarkan</span></button>
+                        <button type="button" class="consult-tool-button consult-close-button" onclick="closeConsultationService()" title="Tutup layanan"><i class="fas fa-chevron-up"></i><span>Tutup</span></button>
+                    </div>
+                </div>
+                <div class="consult-frame-wrap">
+                    <div id="consult-frame-loading" class="consult-frame-loading"><span class="consult-loader"></span><strong>Menyiapkan layanan konsultasi...</strong><small>Mohon tunggu sebentar</small></div>
+                    <iframe id="consult-service-iframe" title="Form Konsultasi Kepegawaian KLIK-ASN" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write" onload="hideConsultationLoading()"></iframe>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
     <!-- Footer -->
     <footer class="bg-primary-dark text-gray-300 border-t-4 border-secondary mt-10">
         <div class="container mx-auto px-4 lg:px-8 py-8">
@@ -1918,11 +1825,17 @@
                 </div>
                 <button type="button" onclick="tutupFaqModal()" class="w-10 h-10 rounded-xl bg-blue-50 text-primary hover:bg-primary hover:text-white transition-colors" aria-label="Tutup FAQ"><i class="fas fa-times"></i></button>
             </div>
-            <div class="p-5 space-y-3">
-                <div class="faq-item"><button class="faq-question" onclick="toggleFaqItem(this)">Apa itu KLIK-ASN?<i class="fas fa-chevron-down"></i></button><div class="faq-answer hidden">KLIK-ASN merupakan kanal layanan informasi komprehensif ASN yang dikembangkan untuk memudahkan akses layanan dan informasi kepegawaian secara digital.</div></div>
-                <div class="faq-item"><button class="faq-question" onclick="toggleFaqItem(this)">Bagaimana membuka layanan teknis?<i class="fas fa-chevron-down"></i></button><div class="faq-answer hidden">Pilih layanan teknis yang tersedia. Layanan akan terbuka dalam frame layanan sehingga halaman utama tetap terlindungi dan dapat kembali digunakan setelah tombol Exit ditekan.</div></div>
-                <div class="faq-item"><button class="faq-question" onclick="toggleFaqItem(this)">Bagaimana menggunakan pencarian?<i class="fas fa-chevron-down"></i></button><div class="faq-answer hidden">Tekan ikon pencarian pada header, masukkan kata kunci layanan atau informasi, lalu pilih hasil pencarian yang muncul.</div></div>
-                <div class="faq-item"><button class="faq-question" onclick="toggleFaqItem(this)">Bagaimana menghubungi BKPSDM Karangasem?<i class="fas fa-chevron-down"></i></button><div class="faq-answer hidden">Gunakan menu Hubungi Kami pada footer atau kunjungi website resmi BKPSDM Kabupaten Karangasem melalui ikon globe.</div></div>
+            <div class="p-5 space-y-3" id="faq-list">
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Apa itu KLIK-ASN?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">KLIK-ASN adalah portal terpadu untuk membantu ASN mengakses kanal layanan, informasi kepegawaian, panduan, dan konsultasi secara digital melalui satu halaman.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Bagaimana cara login ke KLIK-ASN?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Pilih tombol <b>Login</b> pada bagian header, masukkan NIP/username dan kata sandi yang terdaftar, lalu tekan tombol masuk. Tunggu hingga sistem memvalidasi akun dan menampilkan status login. Jangan membagikan kata sandi kepada siapa pun.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Mengapa beberapa layanan meminta login?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Sebagian layanan hanya tersedia bagi pengguna yang sudah terautentikasi. Silakan login terlebih dahulu, kemudian pilih kembali layanan yang dibutuhkan. Jika sudah login tetapi akses masih tertutup, muat ulang halaman dan periksa status sesi akun.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Bagaimana membuka layanan teknis di dalam portal?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Buka bagian layanan, pilih kartu layanan yang diperlukan, kemudian tunggu hingga konten tampil di frame. Untuk kembali ke portal, gunakan tombol <b>Keluar Layanan</b> atau tombol tutup yang tersedia pada tampilan layanan.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Bagaimana menggunakan fitur pencarian?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Tekan ikon kaca pembesar pada header. Panel pencarian akan muncul di bawah header. Ketik nama layanan atau kata kunci informasi, lalu pilih hasil yang sesuai. Jika hasil mengarah ke layanan terbatas, sistem akan meminta Anda login terlebih dahulu.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Bagaimana menggunakan layanan konsultasi?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Login terlebih dahulu, lalu buka menu <b>Bantuan → Layanan Konsultasi</b>. Form konsultasi akan dimuat pada frame di portal. Isi data dan uraian pertanyaan secara lengkap, gunakan bahasa yang sopan, dan pastikan data yang dikirim benar sebelum menekan tombol kirim.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Apa yang harus dilakukan jika frame layanan kosong atau gagal dimuat?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Tunggu beberapa saat, lalu gunakan tombol segarkan jika tersedia. Pastikan koneksi internet stabil. Beberapa situs membatasi penayangan melalui iframe; jika masalah tetap terjadi, hubungi pengelola portal atau administrator layanan untuk mendapatkan bantuan.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Bagaimana jika lupa kata sandi atau gagal login?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Gunakan fitur pemulihan atau reset kata sandi pada jendela login jika tersedia. Periksa kembali NIP/username dan pastikan tidak ada spasi yang tidak disengaja. Jika tetap gagal, hubungi administrator akun melalui jalur resmi instansi.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Bagaimana keluar dari akun dengan aman?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Tekan tombol <b>Logout</b> pada menu akun setelah selesai menggunakan portal, terutama jika memakai perangkat bersama. Pastikan halaman kembali ke keadaan sebelum login.</div></div>
+                <div class="faq-item"><button class="faq-question" aria-expanded="true" onclick="toggleFaqItem(this)">Bagaimana menjaga keamanan data saat memakai KLIK-ASN?<i class="fas fa-chevron-down rotate-180"></i></button><div class="faq-answer">Gunakan akun pribadi, jangan membagikan kata sandi atau kode verifikasi, hindari menyimpan kredensial pada perangkat umum, dan logout setelah selesai. Masukkan data kepegawaian hanya pada layanan resmi yang relevan.</div></div>
             </div>
         </div>
     </div>
@@ -2072,201 +1985,108 @@
         </button>
     </div>
 
- <script>
-// PENTING: Ganti URL di bawah ini dengan URL Web App kompilasi Google Apps Script Anda!
-const API_URL = "https://script.google.com/macros/s/AKfycbzXITzPW6D5uyI-sfdq2s261jXL4N_0UZiR4Cr7fIwHVPCmWY55LMZGUio5UmPzngo/exec";
 
-document.getElementById('formKonsultasiAPI').addEventListener('submit', async function(e) {
-    e.preventDefault(); // Mencegah reload halaman otomatis
+    <script>
+        // Layanan konsultasi baru dibuka hanya setelah sesi login KLIK-ASN terdeteksi.
+        const CONSULTATION_SERVICE_URL = "https://bkpsdm-karangasemkab.github.io/Form-Konsultasi/";
 
-    const btnSubmit = document.getElementById('btnKirimAPI');
-    const textKirim = document.getElementById('textKirim');
-    const iconKirim = document.getElementById('iconKirim');
-
-    // Mengambil nilai input dari form
-    const nama = document.getElementById('api_nama').value;
-    const tempatTugas = document.getElementById('api_tempatTugas').value;
-    const bidang = document.getElementById('api_bidang').value;
-    const jenis = document.getElementById('api_jenis').value;
-    const keterangan = document.getElementById('api_keterangan').value;
-
-    // Menyusun payload data sesuai dengan struktur 'action: create' pada Apps Script Anda
-    const payload = {
-        action: 'create',
-        data: {
-            nama: nama,
-            tempatTugas: tempatTugas,
-            bidang: bidang,
-            jenis: jenis,
-            keterangan: keterangan
+        function getKLIKLoggedInUser() {
+            try {
+                const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+                if (!raw) return null;
+                const user = JSON.parse(raw);
+                return user && user.nip && user.nama ? user : null;
+            } catch (error) {
+                return null;
+            }
         }
-    };
 
-    // Mengubah tampilan tombol menjadi Loading/Sedang Mengirim
-    btnSubmit.disabled = true;
-    btnSubmit.classList.add('opacity-70', 'cursor-not-allowed');
-    textKirim.innerText = "Sedang Mengirim...";
-    iconKirim.className = "fas fa-spinner fa-spin";
+        // Sinkronkan label tombol konsultasi segera setelah status login berubah.
+        function syncConsultationAccessButton() {
+            const user = getKLIKLoggedInUser();
+            const button = document.getElementById("consult-access-button");
+            const title = document.getElementById("consult-access-title");
+            const description = document.getElementById("consult-access-description");
+            if (!button) return;
 
-    try {
-        // Mengirimkan data menggunakan metode POST ke Apps Script API
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            mode: 'cors', // Penting untuk mengatasi masalah CORS lintas domain
-            headers: {
-                'Content-Type': 'text/plain' // Apps Script menerima muatan JSON dengan tipe teks biasa
-            },
-            body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-
-        if (result.status === 'success') {
-            alert('Sukses! Konsultasi Anda telah terkirim dan Admin akan segera mendapat notifikasi email.');
-            document.getElementById('formKonsultasiAPI').reset(); // Mengosongkan isi form kembali
-        } else {
-            alert('Gagal mengirim data: ' + (result.message || 'Terjadi kesalahan internal backend.'));
+            button.disabled = false;
+            button.innerHTML = user
+                ? '<i class="fas fa-comments"></i><span>Buka Layanan Konsultasi</span><i class="fas fa-arrow-right consult-button-arrow"></i>'
+                : '<i class="fas fa-lock"></i><span>Login dan Buka Konsultasi</span><i class="fas fa-arrow-right consult-button-arrow"></i>';
+            if (title) title.textContent = user ? "Akses layanan konsultasi" : "Login untuk melanjutkan";
+            if (description) description.textContent = user
+                ? "Anda sudah login. Buka layanan konsultasi saat siap."
+                : "Silakan masuk menggunakan akun KLIK-ASN Anda terlebih dahulu untuk membuka formulir konsultasi online.";
         }
-    } catch (error) {
-        console.error('Error saat submit form:', error);
-        alert('Terjadi kesalahan jaringan atau konfigurasi URL API salah.');
-    } finally {
-        // Mengembalikan tombol ke keadaan semula
-        btnSubmit.disabled = false;
-        btnSubmit.classList.remove('opacity-70', 'cursor-not-allowed');
-        textKirim.innerText = "Kirim Pesan Konsultasi";
-        iconKirim.className = "fas fa-paper-plane";
-    }
-});
-   
-// Variabel penampung data dari spreadsheet agar pencarian bisa berjalan instan offline
-let semuaDataKonsultasi = []; 
 
-// Jalankan pengambilan data otomatis saat halaman selesai dimuat
-document.addEventListener("DOMContentLoaded", function() {
-    muatRiwayatKonsultasi();
-});
+        function openConsultationService() {
+            const user = getKLIKLoggedInUser();
+            if (!user) {
+                showNotification("Silakan login terlebih dahulu untuk mengakses layanan konsultasi.", "Login Diperlukan");
+                openLoginModal();
+                return;
+            }
+            const frame = document.getElementById("consult-service-iframe");
+            const shell = document.getElementById("consult-frame-shell");
+            const card = document.getElementById("consult-access-card");
+            const title = document.getElementById("consult-access-title");
+            const description = document.getElementById("consult-access-description");
+            const button = document.getElementById("consult-access-button");
+            if (!frame || !shell) return;
+            shell.classList.remove("hidden");
+            if (card) card.classList.add("consult-access-card-compact");
+            if (title) title.textContent = "Layanan siap digunakan";
+            if (description) description.textContent = "Layanan konsultasi dibuka di bawah ini. Sesi KLIK-ASN Anda terdeteksi aktif.";
+            if (button) { button.innerHTML = '<i class="fas fa-comments"></i><span>Buka Layanan Konsultasi</span><i class="fas fa-arrow-right consult-button-arrow"></i>'; button.disabled = false; }
+            if (frame.dataset.loaded !== "true") {
+                const loading = document.getElementById("consult-frame-loading");
+                if (loading) loading.classList.remove("is-hidden");
+                frame.src = CONSULTATION_SERVICE_URL;
+                frame.dataset.loaded = "true";
+            }
+            shell.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
 
-// Fungsi Utama: Mengambil data dari Google Sheets via API
-function muatRiwayatKonsultasi() {
-    const tbody = document.getElementById("tabel-riwayat-body");
-    const inputCari = document.getElementById("cari-konsultasi");
-    
-    // Reset kolom input pencarian setiap kali melakukan refresh data keras
-    if (inputCari) inputCari.value = ""; 
-    
-    tbody.innerHTML = `
-        <tr>
-            <td colspan="7" class="px-4 py-6 text-center text-gray-400">
-                <i class="fas fa-spinner fa-spin mr-2"></i> Membarui daftar tiket...
-            </td>
-        </tr>
-    `;
+        function hideConsultationLoading() {
+            const loading = document.getElementById("consult-frame-loading");
+            if (loading) loading.classList.add("is-hidden");
+        }
 
-    fetch(API_URL)
-        .then(response => response.json())
-        .then(data => {
-            // Simpan data asli ke variabel lokal agar fungsi pencarian / filter bekerja kilat
-            semuaDataKonsultasi = data; 
-            
-            // Render data ke dalam tabel
-            tampilkanDataKeTabel(semuaDataKonsultasi);
-        })
-        .catch(error => {
-            console.error("Error mengambil data:", error);
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="7" class="px-4 py-6 text-center text-red-500">
-                        <i class="fas fa-exclamation-triangle mr-2"></i> Gagal memuat data riwayat. Periksa koneksi jaringan atau URL API.
-                    </td>
-                </tr>
-            `;
-        });
-}
+        function reloadConsultationService() {
+            if (!getKLIKLoggedInUser()) { closeConsultationService(); openLoginModal(); return; }
+            const frame = document.getElementById("consult-service-iframe");
+            const loading = document.getElementById("consult-frame-loading");
+            if (!frame) return;
+            if (loading) loading.classList.remove("is-hidden");
+            frame.src = CONSULTATION_SERVICE_URL;
+            frame.dataset.loaded = "true";
+        }
 
-// Escape nilai dari API sebelum dimasukkan ke markup.
-function escapeKLIK(value) {
-    return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-}
+        function closeConsultationService() {
+            const shell = document.getElementById("consult-frame-shell");
+            const frame = document.getElementById("consult-service-iframe");
+            const card = document.getElementById("consult-access-card");
+            const title = document.getElementById("consult-access-title");
+            const description = document.getElementById("consult-access-description");
+            const button = document.getElementById("consult-access-button");
+            if (shell) shell.classList.add("hidden");
+            if (frame) { frame.src = "about:blank"; frame.dataset.loaded = "false"; }
+            if (card) card.classList.remove("consult-access-card-compact");
+            if (title) title.textContent = getKLIKLoggedInUser() ? "Akses layanan konsultasi" : "Login untuk melanjutkan";
+            if (description) description.textContent = getKLIKLoggedInUser() ? "Anda sudah login. Buka layanan konsultasi saat siap." : "Silakan masuk menggunakan akun KLIK-ASN Anda terlebih dahulu untuk membuka formulir konsultasi online.";
+            if (button) { button.disabled = false; button.innerHTML = getKLIKLoggedInUser() ? '<i class="fas fa-comments"></i><span>Buka Layanan Konsultasi</span><i class="fas fa-arrow-right consult-button-arrow"></i>' : '<i class="fas fa-lock"></i><span>Login dan Buka Konsultasi</span><i class="fas fa-arrow-right consult-button-arrow"></i>'; }
+        }
 
-// Fungsi Bantu: render tabel dengan kolom proporsional + tombol lihat detail.
-function tampilkanDataKeTabel(dataArray) {
-    const tbody = document.getElementById("tabel-riwayat-body");
-    tbody.innerHTML = "";
-    window.dataKonsultasiTampil = Array.isArray(dataArray) ? dataArray : [];
-    if (!Array.isArray(dataArray) || dataArray.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-6 text-center text-gray-400">Tidak ada riwayat data konsultasi yang cocok ditemukan.</td></tr>';
-        return;
-    }
-    dataArray.forEach((item, index) => {
-        const status = String(item.status || 'Belum ada status');
-        let statusBadge = '';
-        if (/menunggu/i.test(status)) statusBadge = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><i class="far fa-clock mr-1"></i>Menunggu</span>';
-        else if (/proses|diproses/i.test(status)) statusBadge = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"><i class="fas fa-spinner mr-1"></i>Diproses</span>';
-        else if (/selesai/i.test(status)) statusBadge = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><i class="fas fa-check-circle mr-1"></i>Selesai</span>';
-        else statusBadge = `<span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-700">${escapeKLIK(status)}</span>`;
-        const safeTime = escapeKLIK(item.waktu || '-');
-        const safeName = escapeKLIK(item.nama || '-');
-        const safePlace = escapeKLIK(item.tempatTugas || '-');
-        const safeBidang = escapeKLIK(item.bidang || '-');
-        const safeJenis = escapeKLIK(item.jenis || '-');
-        const safeQuestion = escapeKLIK(item.keterangan || '-');
-        const safeFollowup = escapeKLIK(item.hasil || '-');
-        const row = document.createElement('tr');
-        row.className = 'border-b border-gray-100 transition-colors';
-        row.innerHTML = `
-            <td class="text-xs whitespace-normal text-gray-500">${safeTime}</td>
-            <td class="font-semibold text-gray-900">${safeName}<div class="text-xs text-gray-500 font-normal mt-1">${safePlace}</div></td>
-            <td class="text-xs text-gray-600"><span class="block text-gray-800 font-semibold">${safeBidang}</span><span class="text-gray-500 block mt-1">${safeJenis}</span></td>
-            <td><span class="consult-question text-xs text-gray-600" title="${safeQuestion}">${safeQuestion}</span></td>
-            <td>${statusBadge}</td>
-            <td class="text-xs text-gray-700"><span class="consult-followup" title="${safeFollowup}">${safeFollowup}</span></td>
-            <td class="text-center"><button type="button" class="consult-detail-btn" onclick="bukaDetailKonsultasi(${index})" aria-label="Lihat detail konsultasi ${safeName}"><i class="fas fa-eye"></i><span>Lihat</span></button></td>
-        `;
-        // Store original item index safely; popup uses the filtered data currently displayed.
-        row.dataset.consultIndex = String(index);
-        tbody.appendChild(row);
-    });
-}
-
-function bukaDetailKonsultasi(index) {
-    const item = (window.dataKonsultasiTampil || [])[index];
-    if (!item) return;
-    const fields = [
-        ['Waktu', item.waktu], ['Nama', item.nama], ['Instansi / Tempat Tugas', item.tempatTugas],
-        ['Perihal / Bidang', item.bidang], ['Jenis Konsultasi', item.jenis], ['Pertanyaan', item.keterangan],
-        ['Status', item.status], ['Tindak Lanjut Admin', item.hasil]
-    ];
-    document.getElementById('consult-detail-content').innerHTML = fields.map(([label, value]) => `<div class="consult-detail-field"><div class="consult-detail-label">${escapeKLIK(label)}</div><div class="consult-detail-value">${escapeKLIK(value || '-')}</div></div>`).join('');
-    const modal = document.getElementById('consult-detail-modal');
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    document.getElementById('consult-detail-title').textContent = `Detail Konsultasi — ${item.nama || 'Pengguna'}`;
-}
-function tutupDetailKonsultasi() {
-    const modal = document.getElementById('consult-detail-modal');
-    if (modal) modal.classList.add('hidden');
-    document.body.style.overflow = '';
-}
-document.addEventListener('keydown', event => { if (event.key === 'Escape') tutupDetailKonsultasi(); });
-// Fungsi Inti Fitur Pencarian Dinamis (Keyup Event)
-function filterRiwayat() {
-    const kataKunci = document.getElementById("cari-konsultasi").value.toLowerCase();
-    
-    // Filter data array lokal berdasarkan Nama atau Tempat Tugas (Instansi)
-    const dataTerfilter = semuaDataKonsultasi.filter(item => {
-        const namaCocok = String(item.nama || '').toLowerCase().includes(kataKunci);
-        const tugasCocok = String(item.tempatTugas || '').toLowerCase().includes(kataKunci);
-        
-        return namaCocok || tugasCocok;
-    });
-
-    // Jalankan ulang penyusunan tabel dengan data yang sudah terfilter ringkas
-    tampilkanDataKeTabel(dataTerfilter);
-}   
-   
- 
-	</script>
+        function lockConsultationService() {
+            closeConsultationService();
+            const title = document.getElementById("consult-access-title");
+            const description = document.getElementById("consult-access-description");
+            const button = document.getElementById("consult-access-button");
+            if (title) title.textContent = "Login untuk melanjutkan";
+            if (description) description.textContent = "Sesi Anda telah berakhir. Silakan login kembali untuk mengakses formulir konsultasi online.";
+            if (button) button.innerHTML = '<i class="fas fa-lock"></i><span>Login dan Buka Konsultasi</span><i class="fas fa-arrow-right consult-button-arrow"></i>';
+        }
+    </script>
                  
           
     <script>
@@ -2341,11 +2161,23 @@ function filterRiwayat() {
             if (!searchBar) return;
             searchBar.classList.toggle('hidden');
             if (!searchBar.classList.contains('hidden')) {
+                const header = document.querySelector('header');
+                if (header && window.innerWidth > 767) {
+                    document.documentElement.style.setProperty('--klik-header-height', `${Math.max(78, header.getBoundingClientRect().bottom)}px`);
+                }
                 input?.focus();
             } else if (results) {
                 results.classList.add('hidden');
                 results.innerHTML = '';
             }
+        }
+
+        function isKLIKASNLoggedIn() {
+            try {
+                const raw = localStorage.getItem(AUTH_STORAGE_KEY || 'klik_asn_auth');
+                const user = raw ? JSON.parse(raw) : null;
+                return !!(user && user.nip && user.nama);
+            } catch (e) { return false; }
         }
 
         function performSiteSearch(keyword) {
@@ -2375,13 +2207,20 @@ function filterRiwayat() {
                 <button type="button" class="search-result-item" data-search-index="${i}">
                     <span class="w-8 h-8 rounded-lg bg-blue-50 text-primary flex items-center justify-center"><i class="fas ${m.type==='service'?'fa-cogs':'fa-search'}"></i></span>
                     <span class="font-medium text-sm">${m.label.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}</span>
+                    ${m.type==='service' && !isKLIKASNLoggedIn() ? '<span class="search-result-lock"><i class="fas fa-lock"></i> Login</span>' : ''}
                 </button>`).join('');
             results.querySelectorAll('[data-search-index]').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const m = matches[Number(btn.dataset.searchIndex)];
                     results.classList.add('hidden');
-                    if (m.type === 'service') openServiceFrame(m.key);
-                    else if (m.el) m.el.scrollIntoView({behavior:'smooth', block:'center'});
+                    if (m.type === 'service') {
+                        if (!isKLIKASNLoggedIn()) {
+                            showNotification('Silakan login terlebih dahulu untuk mengakses layanan ini.', 'Login Diperlukan');
+                            openLoginModal();
+                            return;
+                        }
+                        openServiceFrame(m.key);
+                    } else if (m.el) m.el.scrollIntoView({behavior:'smooth', block:'center'});
                 });
             });
         }
@@ -2406,6 +2245,14 @@ function filterRiwayat() {
             if (!modal) return;
             modal.classList.remove('hidden');
             modal.setAttribute('aria-hidden','false');
+            modal.querySelectorAll('.faq-item').forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                const icon = question?.querySelector('i');
+                if (answer) answer.classList.remove('hidden');
+                if (question) question.setAttribute('aria-expanded','true');
+                if (icon) icon.classList.add('rotate-180');
+            });
             document.body.classList.add('no-scroll');
         }
         function tutupFaqModal() {
@@ -2419,8 +2266,10 @@ function filterRiwayat() {
             const answer = button.nextElementSibling;
             const icon = button.querySelector('i');
             if (!answer) return;
-            answer.classList.toggle('hidden');
-            if (icon) icon.classList.toggle('rotate-180');
+            const isOpening = answer.classList.contains('hidden');
+            answer.classList.toggle('hidden', !isOpening);
+            button.setAttribute('aria-expanded', String(isOpening));
+            if (icon) icon.classList.toggle('rotate-180', isOpening);
         }
 
         // =========================================================
@@ -2703,6 +2552,8 @@ function filterRiwayat() {
 
         // Unlock Services Logic
         function unlockServices(userData = null) {
+            // Perbarui tombol konsultasi segera setelah login berhasil.
+            if (typeof syncConsultationAccessButton === 'function') syncConsultationAccessButton();
             // Hide overlay
             document.getElementById('locked-overlay').style.display = 'none';
 
@@ -2713,10 +2564,19 @@ function filterRiwayat() {
                 : 'User ASN';
 
             // Tampilkan nama lengkap pada header desktop & mobile
-            document.getElementById('desktop-user-name').textContent = userName;
+            const desktopUserName = document.getElementById('desktop-user-name');
+            if (desktopUserName) desktopUserName.textContent = userName;
             document.getElementById('mobile-user-name').textContent = userName;
             const profileCard = document.getElementById('login-panel-profile');
-            if (profileCard) profileCard.classList.remove('hidden');
+            if (profileCard) {
+                profileCard.classList.remove('hidden');
+                profileCard.setAttribute('aria-hidden', 'false');
+            }
+            const loginStatusPanel = document.getElementById('login-status-panel');
+            if (loginStatusPanel) {
+                loginStatusPanel.dataset.authState = 'authenticated';
+                loginStatusPanel.setAttribute('aria-label', 'Status Anda: sudah login, akses semua layanan tersedia');
+            }
             const profileName = document.getElementById('login-panel-user-name');
             const profileNip = document.getElementById('login-panel-user-nip');
             if (profileName) profileName.textContent = userName;
@@ -2724,7 +2584,7 @@ function filterRiwayat() {
             const avatar = document.getElementById('login-panel-avatar');
             if (avatar) avatar.innerHTML = '<i class="fas fa-user-check text-xl"></i>';
 
-            // Ubah tampilan header: Login -> Nama Lengkap + Logout
+            // Header hanya menampilkan tombol Logout; nama pengguna ditampilkan pada kartu profil di bawah header.
             document.getElementById('desktop-login-btn').classList.add('hidden');
             document.getElementById('desktop-user-area').classList.remove('hidden');
             document.getElementById('desktop-user-area').classList.add('flex');
@@ -2734,8 +2594,9 @@ function filterRiwayat() {
             document.getElementById('mobile-user-area').classList.remove('hidden');
 
             // Tombol pada panel Login menjadi Dashboard Saya
-            const loginPanelBtn = document.querySelector('#login-status-panel button');
+            const loginPanelBtn = document.getElementById('login-panel-action') || document.querySelector('#login-status-panel button');
             if (loginPanelBtn) {
+                loginPanelBtn.classList.add('login-panel-action');
                 loginPanelBtn.innerHTML = '<i class="fas fa-tachometer-alt mr-2"></i> Dashboard Saya';
                 loginPanelBtn.classList.replace('bg-primary', 'bg-green-600');
                 loginPanelBtn.classList.replace('hover:bg-primary-dark', 'hover:bg-green-700');
@@ -2768,78 +2629,84 @@ function filterRiwayat() {
 
         // Logout User
         function logoutUser() {
-            localStorage.removeItem(AUTH_STORAGE_KEY);
-            // Kembalikan status layanan menjadi terkunci
-            const lockedOverlay = document.getElementById('locked-overlay');
-            if (lockedOverlay) {
-                lockedOverlay.style.display = 'flex';
-            }
-
-            // Header desktop: tampilkan kembali Login
-            document.getElementById('desktop-login-btn').classList.remove('hidden');
-            document.getElementById('desktop-user-area').classList.add('hidden');
-            document.getElementById('desktop-user-area').classList.remove('flex');
-
-            // Header mobile: tampilkan kembali Login
-            document.getElementById('mobile-login-btn').classList.remove('hidden');
-            document.getElementById('mobile-user-area').classList.add('hidden');
-
-            // Kosongkan nama yang ditampilkan
-            document.getElementById('desktop-user-name').textContent = '';
-            document.getElementById('mobile-user-name').textContent = '';
+            // Reset panel lebih dahulu agar perubahan terlihat langsung, meskipun ada elemen header yang tidak tersedia.
+            const panel = document.getElementById('login-status-panel');
             const profileCard = document.getElementById('login-panel-profile');
-            if (profileCard) profileCard.classList.add('hidden');
             const profileName = document.getElementById('login-panel-user-name');
             const profileNip = document.getElementById('login-panel-user-nip');
+            const avatar = document.getElementById('login-panel-avatar');
+            const loginPanelBtn = document.getElementById('login-panel-action') ||
+                document.querySelector('#login-status-panel .login-panel-action') ||
+                document.querySelector('#login-status-panel button');
+
+            if (panel) {
+                panel.classList.remove('login-panel-refresh');
+                void panel.offsetWidth;
+                panel.classList.add('login-panel-refresh');
+                panel.dataset.authState = 'anonymous';
+                panel.setAttribute('aria-label', 'Login: akses semua layanan');
+                const panelTitle = panel.querySelector('.login-panel-heading h3') || panel.querySelector('h3');
+                const panelSubtitle = panel.querySelector('.login-panel-heading p') || panel.querySelector('.login-panel-heading .text-xs');
+                if (panelTitle) panelTitle.textContent = 'Login';
+                if (panelSubtitle) panelSubtitle.textContent = 'Akses semua layanan';
+            }
+            if (profileCard) {
+                profileCard.classList.add('hidden');
+                profileCard.setAttribute('aria-hidden', 'true');
+            }
             if (profileName) profileName.textContent = '';
             if (profileNip) profileNip.textContent = '';
-            const avatar = document.getElementById('login-panel-avatar');
             if (avatar) avatar.innerHTML = '<i class="fas fa-user-lock text-xl"></i>';
-
-            // Kembalikan tombol panel
-            const loginPanelBtn = document.querySelector('#login-status-panel button');
             if (loginPanelBtn) {
+                loginPanelBtn.id = 'login-panel-action';
+                loginPanelBtn.classList.add('login-panel-action');
+                loginPanelBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                loginPanelBtn.classList.add('bg-primary', 'hover:bg-primary-dark');
                 loginPanelBtn.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i> Masuk';
-                loginPanelBtn.classList.replace('bg-green-600', 'bg-primary');
-                loginPanelBtn.classList.replace('hover:bg-green-700', 'hover:bg-primary-dark');
                 loginPanelBtn.setAttribute('onclick', 'openLoginModal()');
+                loginPanelBtn.disabled = false;
+            }
+            if (panel) {
+                window.requestAnimationFrame(() => panel.classList.remove('login-panel-refresh'));
             }
 
-            // Kembalikan panel status
-            const loginPanel = document.getElementById('login-status-panel');
-            if (loginPanel) {
-                const panelTitle = loginPanel.querySelector('h3');
-                const panelSubtitle = loginPanel.querySelector('p');
-                if (panelTitle) panelTitle.innerText = 'Login';
-                if (panelSubtitle) panelSubtitle.innerText = 'Akses semua layanan';
+            // Hapus sesi setelah panel UI langsung dikembalikan ke kondisi logout.
+            try { localStorage.removeItem(AUTH_STORAGE_KEY); } catch (err) { console.warn('Sesi lokal tidak dapat dihapus:', err); }
+            if (typeof lockConsultationService === 'function') {
+                try { lockConsultationService(); } catch (err) { console.warn('Konsultasi tidak dapat dikunci:', err); }
+            }
+            if (typeof syncConsultationAccessButton === 'function') {
+                try { syncConsultationAccessButton(); } catch (err) { console.warn('Tombol konsultasi tidak dapat disinkronkan:', err); }
             }
 
-            // Kunci kembali seluruh layanan
-            const items = document.querySelectorAll('.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 > div');
-            items.forEach(item => {
+            const lockedOverlay = document.getElementById('locked-overlay');
+            if (lockedOverlay) lockedOverlay.style.display = 'flex';
+
+            // Header desktop dan mobile: setiap elemen diperiksa agar satu elemen yang hilang tidak menghentikan proses logout.
+            document.getElementById('desktop-login-btn')?.classList.remove('hidden');
+            document.getElementById('desktop-user-area')?.classList.add('hidden');
+            document.getElementById('desktop-user-area')?.classList.remove('flex');
+            document.getElementById('mobile-login-btn')?.classList.remove('hidden');
+            document.getElementById('mobile-user-area')?.classList.add('hidden');
+            const desktopName = document.getElementById('desktop-user-name');
+            const mobileName = document.getElementById('mobile-user-name');
+            if (desktopName) desktopName.textContent = '';
+            if (mobileName) mobileName.textContent = '';
+
+            // Kunci kembali seluruh layanan.
+            document.querySelectorAll('.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 > div').forEach(item => {
                 item.classList.add('opacity-50', 'select-none', 'pointer-events-none');
                 item.classList.remove('cursor-pointer');
-                // Handler kartu tetap dipertahankan; pointer-events yang mengunci akses.
             });
-
-            // Kembalikan badge menjadi Butuh Login
             const lockedBadge = document.querySelector('#layanan-teknis .bg-white\\/20');
-            if (lockedBadge) {
-                lockedBadge.innerHTML = '<i class="fas fa-lock mr-2"></i> Butuh Login';
-            }
+            if (lockedBadge) lockedBadge.innerHTML = '<i class="fas fa-lock mr-2"></i> Butuh Login';
 
-            // Tutup frame layanan yang sedang terbuka
             if (typeof closeServiceFrame === 'function') {
-                closeServiceFrame();
+                try { closeServiceFrame(); } catch (err) { console.warn('Frame layanan tidak dapat ditutup:', err); }
             }
-
-            // Tutup menu mobile bila terbuka
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu) mobileMenu.classList.add('hidden');
-
+            document.getElementById('mobile-menu')?.classList.add('hidden');
             showNotification('Anda telah berhasil logout.', 'Sukses');
         }
-
 
         /* =========================================================
            KONFIGURASI URL LAYANAN TEKNIS
@@ -2911,6 +2778,11 @@ function filterRiwayat() {
         };
 
         function openServiceFrame(serviceKey) {
+            if (!isKLIKASNLoggedIn()) {
+                showNotification('Silakan login terlebih dahulu untuk mengakses layanan ini.', 'Login Diperlukan');
+                openLoginModal();
+                return;
+            }
             const service = layananTeknis[serviceKey];
 
             if (!service) {
@@ -3174,7 +3046,10 @@ function filterRiwayat() {
             }
         });
 
-        document.addEventListener("DOMContentLoaded", restoreAuthSession);
+        document.addEventListener("DOMContentLoaded", () => {
+            restoreAuthSession();
+            syncConsultationAccessButton();
+        });
 
 </script>   
 
