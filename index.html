@@ -902,11 +902,19 @@
         main.flex-grow.container > .grid {
             width: 100%;
             max-width: none;
-            grid-template-columns: minmax(270px, .88fr) minmax(0, 2.12fr);
-            gap: clamp(16px, 1.8vw, 28px);
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(16px, 1.8vw, 24px);
             align-items: start;
         }
-        main.flex-grow.container > .grid > * { min-width: 0; }
+        main.flex-grow.container > .grid > * { min-width: 0; width:100%; }
+        main.flex-grow.container > .grid > .lg\:col-span-1 {
+            display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,1.8vw,24px);align-items:stretch;
+        }
+        main.flex-grow.container > .grid > #informasi-kepegawaian,
+        main.flex-grow.container > .grid > .lg\:col-span-2 { grid-column:1 / -1; width:100%; min-width:0; }
+        main.flex-grow.container > .grid > .lg\:col-span-2 { display:grid;grid-template-columns:minmax(0,1fr);gap:20px; }
+        main.flex-grow.container .lg\:col-span-1 > #login-status-panel,
+        main.flex-grow.container .lg\:col-span-1 > #tentang { height:100%; margin:0; }
         /* Kartu lebih rapi pada layar lebar tanpa mengubah isi/fungsinya. */
         main.flex-grow.container .bg-white.rounded-xl,
         main.flex-grow.container #informasi-kepegawaian {
@@ -930,10 +938,8 @@
         /* Tablet: kolom tetap seimbang, ruang horizontal tidak berlebih. */
         @media (max-width: 1023px) {
             :root { --content-gutter: clamp(12px, 2.2vw, 22px); }
-            main.flex-grow.container > .grid {
-                grid-template-columns: minmax(230px, .8fr) minmax(0, 1.7fr);
-                gap: 16px;
-            }
+            main.flex-grow.container > .grid { grid-template-columns:minmax(0,1fr);gap:16px; }
+            main.flex-grow.container > .grid > .lg\:col-span-1 { grid-template-columns:repeat(2,minmax(0,1fr));gap:16px; }
             #beranda.klik-asn-hero > .container { padding-top: 44px; padding-bottom: 56px; }
         }
         /* Ponsel: susun satu kolom dan cegah elemen meluber ke samping. */
@@ -945,6 +951,13 @@
                 padding-bottom: 48px;
             }
             main.flex-grow.container > .grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+            main.flex-grow.container > .grid > .lg\:col-span-1 { grid-template-columns:minmax(0,1fr);gap:16px; }
+            .info-portal-heading{padding:14px 14px 12px;gap:10px}
+            .info-portal-heading-copy{gap:7px}
+            .info-portal-eyebrow{font-size:8px;padding-right:8px}
+            .info-portal-heading h3{font-size:16px}
+            .info-portal-actions{width:auto;justify-content:flex-end}
+            .info-portal-action{flex:0 0 auto;min-height:34px;padding:0 10px}
             main.flex-grow.container { padding-top: 22px; padding-bottom: 28px; }
             body > div.container.mx-auto.px-4.lg\:px-8.my-12 { margin-top: 20px; margin-bottom: 24px; }
             body > div.container.mx-auto.px-4.lg\:px-8.my-12 > .bg-white { padding: 16px; }
@@ -988,7 +1001,55 @@
         .consult-detail-label { font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin-bottom:5px; }
         .consult-detail-value { color:#1e293b;font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere; }
         @media(max-width:767px) { .social-hero-card { padding:14px; } .consult-history-table { min-width:1030px; } .consult-detail-backdrop { padding:10px; } .consult-detail-card { border-radius:17px; } }
-</style>
+
+        /* Informasi Kepegawaian: iframe dashboard terpadu */
+        .info-portal-card {
+            position:relative; min-width:0; overflow:hidden; border-radius:22px;
+            border:1px solid rgba(15,76,129,.14);
+            background:linear-gradient(145deg,#fff 0%,#f7fbff 100%);
+            box-shadow:0 18px 46px rgba(10,50,84,.11),0 2px 8px rgba(15,76,129,.04);
+            isolation:isolate;
+        }
+        .info-portal-card::before {
+            content:"";position:absolute;top:0;left:0;right:0;height:5px;
+            background:linear-gradient(90deg,#0a3254,#1769a8 48%,#f3a712);
+        }
+        .info-portal-heading {
+            display:flex;align-items:center;justify-content:space-between;gap:14px;
+            padding:15px 22px 13px;
+            background:radial-gradient(circle at 90% 0%,rgba(59,112,161,.10),transparent 34%),linear-gradient(120deg,#fff,#f5f9fd);
+        }
+        .info-portal-heading-copy{min-width:0;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+        .info-portal-eyebrow{display:inline-flex;align-items:center;gap:7px;color:#3478a9;font-size:9px;font-weight:800;letter-spacing:.11em;margin:0;padding-right:12px;border-right:1px solid #d9e5f0;white-space:nowrap}
+        .info-portal-heading h3{display:flex;align-items:center;gap:8px;margin:0;color:#102f4b;font-size:clamp(16px,1.5vw,20px);font-weight:800;letter-spacing:-.025em;line-height:1.25}
+        .info-portal-title-icon{display:none}
+        .info-portal-heading p{display:none}
+        .info-portal-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+        .info-portal-action{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:39px;padding:0 13px;border:1px solid #d9e5f0;border-radius:11px;background:#fff;color:#214b6d;font-size:11px;font-weight:750;text-decoration:none;white-space:nowrap;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
+        .info-portal-action:hover{transform:translateY(-2px);border-color:#9fc2df;box-shadow:0 7px 16px rgba(15,76,129,.1)}
+        .info-portal-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 20px;background:#f0f6fc;border-top:1px solid #e2edf7;border-bottom:1px solid #dce8f3;color:#587187;font-size:10px;font-weight:650}
+        .info-portal-meta i{margin-right:6px;color:#2779b6}
+        .info-portal-live{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+        .info-portal-live span{width:7px;height:7px;border-radius:50%;background:#22a06b;box-shadow:0 0 0 4px rgba(34,160,107,.12)}
+        .info-portal-frame-wrap{position:relative;min-height:600px;background:#f8fbfe}
+        #info-portal-iframe{display:block;width:100%;height:clamp(650px,78vh,980px);border:0;background:#fff}
+        .info-portal-loading{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(145deg,#f7fbff,#edf5fc);color:#254965;text-align:center;transition:opacity .25s,visibility .25s}
+        .info-portal-loading.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .info-portal-loading strong{font-size:13px}.info-portal-loading small{font-size:11px;color:#71869a}
+        .info-portal-spinner{width:34px;height:34px;border:3px solid #d6e5f2;border-top-color:#1769a8;border-radius:50%;animation:infoPortalSpin .8s linear infinite}
+        @keyframes infoPortalSpin{to{transform:rotate(360deg)}}
+        @media(max-width:767px){
+            .info-portal-card{border-radius:17px}
+            .info-portal-heading{align-items:center;flex-direction:row;padding:14px 12px 12px;gap:8px}
+            .info-portal-heading h3{font-size:15px}
+            .info-portal-actions{width:auto;justify-content:flex-end}
+            .info-portal-action{flex:0 0 auto}
+            .info-portal-meta{align-items:flex-start;flex-direction:column;padding:10px 14px}
+            .info-portal-frame-wrap{min-height:560px}
+            #info-portal-iframe{height:72vh;min-height:600px}
+        }
+
+    </style>
 </head>
 <body class="bg-background text-gray-800 font-sans antialiased flex flex-col min-h-screen">
 
@@ -1017,7 +1078,7 @@
 
                     <div class="nav-menu-group">
                         <button type="button" class="nav-main-link" aria-haspopup="true" onclick="toggleNavDropdown(this)">
-                            <i class="fas fa-briefcase mr-1.5"></i>Layanan Kepegawaian <i class="fas fa-chevron-down nav-chevron"></i>
+                            <i class="fas fa-briefcase mr-1.5"></i>Layanan Teknis<i class="fas fa-chevron-down nav-chevron"></i>
                         </button>
                         <div class="nav-dropdown">
                             <a href="#layanan-teknis" onclick="closeNavDropdowns()"><i class="fas fa-arrow-trend-up"></i>Cek Kenaikan Pangkat</a>
@@ -1280,55 +1341,39 @@
                 </div>
 
             </div>
-                <!-- Informasi Kepegawaian Terkini - sumber mesin pencarian -->
-                <div id="informasi-kepegawaian" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover-slide-up">
-                    <div class="bg-gray-50 border-b border-gray-100 px-5 py-3">
-                        <div class="flex justify-between items-start gap-3">
-                            <div>
-                                <h3 class="font-bold text-gray-800">
-                                    <i class="fas fa-newspaper text-secondary mr-2"></i>Informasi Kepegawaian Terkini
-                                </h3>
-                                <p class="text-[11px] text-gray-500 mt-1">Hasil pencarian dari sumber resmi pemerintah</p>
-                            </div>
-                            <button class="text-gray-400 hover:text-primary flex-shrink-0" onclick="muatInformasiKepegawaian(true)" title="Perbarui informasi">
-                                <i id="refresh-info-icon" class="fas fa-sync-alt"></i>
+                <!-- INFORMASI KEPEGAWAIAN TERKINI: embedded dashboard URL -->
+                <section id="informasi-kepegawaian" class="info-portal-card" aria-labelledby="info-portal-title">
+                    <div class="info-portal-heading">
+                        <div class="info-portal-heading-copy">
+                            <span class="info-portal-eyebrow"><i class="fas fa-satellite-dish"></i> PUSAT INFORMASI ASN</span>
+                            <h3 id="info-portal-title"><span class="info-portal-title-icon"><i class="fas fa-newspaper"></i></span> Informasi Kepegawaian Terkini</h3>
+                        </div>
+                        <div class="info-portal-actions">
+                            <button type="button" class="info-portal-action" onclick="muatPortalInfoASN()" title="Muat ulang informasi">
+                                <i class="fas fa-rotate"></i><span>Segarkan</span>
                             </button>
                         </div>
-                        <div class="mt-3 flex gap-2 overflow-x-auto pb-1" id="info-category-bar">
-                            <button class="info-chip active border rounded-full px-3 py-1 text-[11px] whitespace-nowrap" data-category="all" onclick="pilihKategoriInfo('all', this)">Semua</button>
-                            <button class="info-chip border border-gray-200 text-gray-600 rounded-full px-3 py-1 text-[11px] whitespace-nowrap" data-category="bkn" onclick="pilihKategoriInfo('bkn', this)">BKN</button>
-                            <button class="info-chip border border-gray-200 text-gray-600 rounded-full px-3 py-1 text-[11px] whitespace-nowrap" data-category="regulasi" onclick="pilihKategoriInfo('regulasi', this)">Regulasi</button>
-                            <button class="info-chip border border-gray-200 text-gray-600 rounded-full px-3 py-1 text-[11px] whitespace-nowrap" data-category="layanan" onclick="pilihKategoriInfo('layanan', this)">Layanan ASN</button>
-                            <button class="info-chip border border-gray-200 text-gray-600 rounded-full px-3 py-1 text-[11px] whitespace-nowrap" data-category="karangasem" onclick="pilihKategoriInfo('karangasem', this)">Karangasem</button>
+                    </div>
+                    <div class="info-portal-meta">
+                        <span><i class="fas fa-circle-check"></i> Terintegrasi dengan dashboard informasi</span>
+                        <span class="info-portal-live"><span></span> Tampilan langsung</span>
+                    </div>
+                    <div class="info-portal-frame-wrap">
+                        <div class="info-portal-loading" id="info-portal-loading">
+                            <span class="info-portal-spinner"></span>
+                            <strong>Menyiapkan informasi kepegawaian…</strong>
+                            <small>Mohon tunggu beberapa saat.</small>
                         </div>
+                        <iframe
+                            id="info-portal-iframe"
+                            src="https://script.google.com/macros/s/AKfycbx1QSeAJdBRSQXUSUlMJGLRQtnuHupfFcQBWJrl0RP1qA8JndZsfOVlK9Y3Azyd7KITlg/exec"
+                            title="Dashboard Informasi Kepegawaian Terkini"
+                            loading="lazy"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allow="clipboard-read; clipboard-write"
+                            onload="sembunyikanLoadingPortalInfo()"></iframe>
                     </div>
-
-                    <div class="p-3 border-b border-gray-100 bg-white">
-                        <div class="relative">
-                            <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 text-xs"></i>
-                            <input id="info-search-input" type="search" autocomplete="off"
-                                   placeholder="Cari informasi kepegawaian..."
-                                   oninput="filterInformasiKepegawaian()"
-                                   class="w-full pl-8 pr-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
-                        </div>
-                    </div>
-
-                    <div id="informasi-kepegawaian-list" class="info-news-scroll p-3 space-y-2">
-                        <div class="info-skeleton space-y-2">
-                            <div class="h-20 bg-gray-100 rounded-lg"></div>
-                            <div class="h-20 bg-gray-100 rounded-lg"></div>
-                            <div class="h-20 bg-gray-100 rounded-lg"></div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 border-t border-gray-100 px-4 py-2 flex items-center justify-between gap-3">
-                        <span id="info-last-update" class="text-[10px] text-gray-400">Memuat informasi...</span>
-                        <button onclick="muatInformasiKepegawaian(true)" class="text-xs text-primary hover:text-primary-dark font-semibold whitespace-nowrap">
-                            <i class="fas fa-sync-alt mr-1"></i> Perbarui
-                        </button>
-                    </div>
-                </div>
-             
+                </section>
 
             <!-- Middle Column: About & Integrations -->
             <div class="lg:col-span-2 space-y-6">
@@ -1349,7 +1394,7 @@
                         <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                             
                             <!-- Card 1: SIDOKUASN -->
-                            <a href="https://sidokuasn.bkpsdmkarangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-green-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-green-50 relative overflow-hidden">
+                            <a href="https://www.sidokuasn-bkpsdm-karangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-green-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-green-50 relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-green-500"></div>
                                 <i class="fas fa-cloud text-3xl text-green-500 mb-3 group-hover:scale-110 transition-transform"></i>
                                 <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Kanal Layanan<br>SIDOKUASN</h4>
@@ -1393,10 +1438,10 @@
                             </a>
 
                             <!-- Card 5: Layanan Sadari Jafung Fungsional  -->
-                            <a href="https://sadari-jafung.bkpsdmkarangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-teal-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-teal-50 relative overflow-hidden">
+                            <a href="https://www.sadarijafung-bkpsdm-karangasemkab.web.id/" target="_blank" rel="noopener noreferrer" class="group block border border-teal-200 rounded-lg p-4 text-center hover:shadow-md transition-all hover:bg-teal-50 relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-teal-500"></div>
                                 <i class="fas fa-arrow-trend-up text-3xl text-teal-500 mb-3 group-hover:scale-110 transition-transform"></i>
-                                <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Kanal<br>Sadari Jafung</h4>
+                                <h4 class="font-bold text-sm text-gray-800 mb-1 leading-tight">Kanal Layanan<br>Sadari Jafung</h4>
                                 <p class="text-[10px] text-gray-500 mb-3">Kanal layanan utama pengelolaan karier dan administrasi bagi Pegawai Negeri Sipil (PNS) dengan Jabatan Fungsional (JF)</p>
                                 <div class="w-6 h-6 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center mx-auto group-hover:bg-teal-500 group-hover:text-white transition-colors">
                                     <i class="fas fa-external-link-alt text-xs"></i>
@@ -3132,5 +3177,20 @@ function filterRiwayat() {
         document.addEventListener("DOMContentLoaded", restoreAuthSession);
 
 </script>   
+
+    <script>
+      function muatPortalInfoASN() {
+        const frame = document.getElementById('info-portal-iframe');
+        const loading = document.getElementById('info-portal-loading');
+        if (!frame) return;
+        if (loading) loading.classList.remove('is-hidden');
+        frame.src = 'https://script.google.com/macros/s/AKfycbx1QSeAJdBRSQXUSUlMJGLRQtnuHupfFcQBWJrl0RP1qA8JndZsfOVlK9Y3Azyd7KITlg/exec';
+      }
+      function sembunyikanLoadingPortalInfo() {
+        const loading = document.getElementById('info-portal-loading');
+        if (loading) loading.classList.add('is-hidden');
+      }
+    </script>
+
 </body>
 </html>
